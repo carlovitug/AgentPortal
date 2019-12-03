@@ -1,0 +1,7 @@
+﻿<dbconnection>
+  <active>Server=192.168.62.13;Database=DB.Operations;User Id=leonard.vitug;Password=C@lobaby121819;Trusted_Connection=True;Integrated Security=False;</active>
+  <weepay>Server=192.168.62.13;Database=DB.Operations;User Id=leonard.vitug;Password=C@lobaby121819;Trusted_Connection=True;Integrated Security=False;</weepay>
+  <ctbc>Server=192.168.62.10;Database=PRODUCTION-V1.3;User Id=monitoring;Password=P@ss1234;Trusted_Connection=True;Integrated Security=False;</ctbc>
+  <fexco>Server=192.168.62.10;Database=Prod.Fexco.CTBC.Bancnet;User Id=monitoring;Password=P@ss1234;Trusted_Connection=True;Integrated Security=False;</fexco>
+  <!--<active>Server=192.168.62.10;Database=Prod.Fexco.CTBC.Bancnet;User Id=monitoring;Password=P@ss1234;Trusted_Connection=True;Integrated Security=False;</active>-->
+</dbconnection>
