@@ -50,29 +50,50 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MerchantCRUD " +
-                     "@id = 0, @bid = {1}, @name = {2}, @geolocation  = {3}, @telephone = {4}, @email = {5}, @user = {6}, @StatementType = {7}",
-                     merchant.ID, merchant.BranchID, merchant.Name, merchant.Geolocation, merchant.Telephone, merchant.Email, merchant.User, "U");
+                     "@bid = {0}, @name = {1}, @address = {2}, @geolocation  = {3}, @deactivate = {4}, @enrolment = {5}, @withdrawal = {6}, " +
+                     "@purchase = {7}, @inquiry = {8}, @user = {6}, @StatementType = {7}, @id = {08}",
+                      merchant.BranchID, merchant.Name, merchant.Address, merchant.Geolocation, merchant.Deactivated, merchant.Enrolment, 
+                      merchant.Withdrawal, merchant.Purchase, merchant.Inquiry, merchant.User, "U", merchant.ID);
             }
             catch (Exception)
             {
                 throw;
             }
             
-            return agent;
+            return merchant;
         }
 
-        public async Task<Merchant> AddMerchant(Merchant agent)
+        public async Task<Merchant> AddMerchant(Merchant merchant)
         {
-            await _context.Merchant.AddAsync(agent);
-            await _context.SaveChangesAsync();
-            return agent;
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MerchantCRUD " +
+                 "@bid = {0}, @name = {1}, @address = {2}, @geolocation  = {3}, @deactivate = {4}, @enrolment = {5}, @withdrawal = {6}, " +
+                     "@purchase = {7}, @inquiry = {8}, @user = {6}, @StatementType = {7}, @id = {08}",
+                  merchant.BranchID, merchant.Name, merchant.Address, merchant.Geolocation, merchant.Deactivated, merchant.Enrolment, merchant.Withdrawal,
+                  merchant.Purchase, merchant.Inquiry, merchant.User, "C", merchant.ID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return merchant;
         }
 
-        public async Task<Merchant> DeleteMerchant(Merchant agent)
+        public async Task<Merchant> DeleteMerchant(Merchant merchant)
         {
-            _context.Entry(agent).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
-            return agent;
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MerchantCRUD " +
+                     "@StatementType = {0}, @id = {1}", "D", merchant.ID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return merchant;
         }
     }
 }
