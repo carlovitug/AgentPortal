@@ -38,7 +38,7 @@ namespace ABMS_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "Error: Incomplete data." });
+                return BadRequest(new { Message = "Error: Bad request." });
             }
         }
 
@@ -46,29 +46,29 @@ namespace ABMS_Backend.Controllers
         [HttpPost("AddBranch")]
         public async Task<ActionResult<Branch>> AddBranch(Branch agent)
         {
-            if (agent.ID > 0)
+            if (agent.ID == 0)
             {
                 var temp = await _agentRepository.AddBranch(agent);
                 return Ok(temp);
             }
             else
             {
-                return BadRequest(new { Message = "Error: Incomplete data." });
+                return BadRequest(new { Message = "Error: Bad request." });
             }
         }
 
         //Update branch record
         [HttpPost("UpdateBranch")]
-        public async Task<ActionResult<Branch>> UpdateBranch(Branch agent)
+        public async Task<ActionResult<Branch>> UpdateBranch(Branch branch)
         {
-            if(agent.ID > 0)
+            if(branch.ID > 0)
             {
-                var temp = await _agentRepository.UpdateBranch(agent);
+                var temp = await _agentRepository.UpdateBranch(branch);
                 return Ok(temp);
             }
             else
             {
-                return BadRequest(new { Message = "Error: Incomplete data." });
+                return BadRequest(new { Message = "Error: Bad request." });
             }
             
         }
@@ -84,7 +84,7 @@ namespace ABMS_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "Error: Incomplete data." });
+                return BadRequest(new { Message = "Error: Bad request." });
             }
                 
             

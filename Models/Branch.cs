@@ -10,10 +10,12 @@ namespace ABMS_Backend.Models
     {
         
         public int ID { get; set; }
-        public string Branch_Name { get; set; }
+        public string Name { get; set; }
         public string Location { get; set; }
         public  string Telephone { get; set; }
         public string Email { get; set; }
+        public string User { get; set; }
+
 
     }
 }

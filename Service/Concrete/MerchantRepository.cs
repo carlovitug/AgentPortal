@@ -18,27 +18,46 @@ namespace ABMS_Backend.Service.Concrete
         }
         public async Task<ActionResult<IEnumerable<Merchant>>> GetMerchants()
         {
+            List<Merchant> merchants = new List<Merchant>();
             try
             {
-                return await _context.Merchant.ToListAsync();
+                merchants = await _context.Merchant.FromSql("dbo.SP_MerchantCRUD @StatementType = {0}", "RA").ToListAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var temp = ex;
                 throw;
             }
+            return merchants;
             
         }
 
         public async Task<Merchant> GetMerchant(int id)
         {
-            return await _context.Merchant.Where(w => w.ID == id).FirstOrDefaultAsync();
+            Merchant merchant = new Merchant();
+            try
+            {
+                merchant = await _context.Merchant.FromSql("dbo.SP_MerchantCRUD @StatementType = {0}, @id = {1}", "R", id).FirstOrDefaultAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return merchant;
         }
 
-        public async Task<Merchant> UpdateMerchant(Merchant agent)
+        public async Task<Merchant> UpdateMerchant(Merchant merchant)
         {
-            _context.Entry(agent).State = EntityState.Modified;
-           await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MerchantCRUD " +
+                     "@id = 0, @bid = {1}, @name = {2}, @geolocation  = {3}, @telephone = {4}, @email = {5}, @user = {6}, @StatementType = {7}",
+                     merchant.ID, merchant.BranchID, merchant.Name, merchant.Geolocation, merchant.Telephone, merchant.Email, merchant.User, "U");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
             return agent;
         }
 

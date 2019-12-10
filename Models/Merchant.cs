@@ -10,12 +10,18 @@ namespace ABMS_Backend.Models
     {
         
         public int ID { get; set; }
-        public int  Merchant_ID { get; set; }
-        public string Merchant_Name { get; set; }
-        public string Main_Contact { get; set; }
-        public string Location { get; set; }
+        public int  BranchID { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Geolocation { get; set; }
         public string Telephone { get; set; }
-        public  string Email { get; set; }
+        public string Email { get; set; }
+        public bool Deactivated { get; set; }
+        public bool Enrolment { get; set; }
+        public bool Withdrawal { get; set; }
+        public bool Purchase { get; set; }
+        public bool Inquiry { get; set; }
+        public string User { get; set; }
 
     }
 }

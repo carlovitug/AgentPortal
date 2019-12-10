@@ -17,5 +17,7 @@ namespace ABMS_Backend.Models
         public DbSet<Branch> Branch { get; set; }
         public DbSet<Merchant> Merchant { get; set; }
         public DbSet<General> General { get; set; }
+
+
     }
 }

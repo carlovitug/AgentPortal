@@ -1,0 +1,14 @@
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Release\netcoreapp2.1\ABMS_Backend.deps.json
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Release\netcoreapp2.1\ABMS_Backend.runtimeconfig.json
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Release\netcoreapp2.1\ABMS_Backend.runtimeconfig.dev.json
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Release\netcoreapp2.1\ABMS_Backend.dll
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Release\netcoreapp2.1\ABMS_Backend.pdb
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.csprojAssemblyReference.cache
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.csproj.CoreCompileInputs.cache
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cache
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cs
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.AssemblyInfoInputs.cache
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.AssemblyInfo.cs
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.RazorTargetAssemblyInfo.cache
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.dll
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Release\netcoreapp2.1\ABMS_Backend.pdb
