@@ -17,7 +17,6 @@ C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backe
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.runtimeconfig.dev.json
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.dll
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.pdb
-C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.csprojAssemblyReference.cache
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.csproj.CoreCompileInputs.cache
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cache
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cs
@@ -26,3 +25,18 @@ C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backe
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorTargetAssemblyInfo.cache
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.dll
 C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.pdb
+C:\Users\user2\source\repos\ABMS\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.csprojAssemblyReference.cache
+E:\Projects\Ongoing Projects\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.deps.json
+E:\Projects\Ongoing Projects\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.runtimeconfig.json
+E:\Projects\Ongoing Projects\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.runtimeconfig.dev.json
+E:\Projects\Ongoing Projects\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.dll
+E:\Projects\Ongoing Projects\ABMS_Backend\bin\Debug\netcoreapp2.1\ABMS_Backend.pdb
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.csprojAssemblyReference.cache
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.csproj.CoreCompileInputs.cache
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cache
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cs
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.AssemblyInfoInputs.cache
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.AssemblyInfo.cs
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorTargetAssemblyInfo.cache
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.dll
+E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.pdb

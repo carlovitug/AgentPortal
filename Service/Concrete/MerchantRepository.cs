@@ -51,7 +51,7 @@ namespace ABMS_Backend.Service.Concrete
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MerchantCRUD " +
                      "@bid = {0}, @name = {1}, @address = {2}, @geolocation  = {3}, @deactivate = {4}, @enrolment = {5}, @withdrawal = {6}, " +
-                     "@purchase = {7}, @inquiry = {8}, @user = {6}, @StatementType = {7}, @id = {08}",
+                     "@purchase = {7}, @inquiry = {8}, @user = {9}, @StatementType = {10}, @id = {11}",
                       merchant.BranchID, merchant.Name, merchant.Address, merchant.Geolocation, merchant.Deactivated, merchant.Enrolment, 
                       merchant.Withdrawal, merchant.Purchase, merchant.Inquiry, merchant.User, "U", merchant.ID);
             }
@@ -68,14 +68,13 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MerchantCRUD " +
-                 "@bid = {0}, @name = {1}, @address = {2}, @geolocation  = {3}, @deactivate = {4}, @enrolment = {5}, @withdrawal = {6}, " +
-                     "@purchase = {7}, @inquiry = {8}, @user = {6}, @StatementType = {7}, @id = {08}",
-                  merchant.BranchID, merchant.Name, merchant.Address, merchant.Geolocation, merchant.Deactivated, merchant.Enrolment, merchant.Withdrawal,
-                  merchant.Purchase, merchant.Inquiry, merchant.User, "C", merchant.ID);
+                 "@bid = {0}, @name = {1}, @address = {2}, @geolocation  = {3}, @deactivate = {4}, @enrolment = {5}, " +
+                 "@withdrawal = {6}, @purchase = {7}, @inquiry = {8}, @user = {9}, @StatementType = {10}, @id = {11}",
+                  merchant.BranchID, merchant.Name, merchant.Address, merchant.Geolocation, merchant.Deactivated, 
+                  merchant.Enrolment, merchant.Withdrawal, merchant.Purchase, merchant.Inquiry, merchant.User, "C", merchant.ID);
             }
             catch (Exception)
             {
-
                 throw;
             }
             return merchant;

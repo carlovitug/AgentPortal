@@ -47,7 +47,7 @@ namespace ABMS_Backend.Controllers
         [HttpPost("AddMerchant")]
         public async Task<ActionResult<Merchant>> AddMerchant(Merchant agent)
         {
-            if (agent.Merchant_ID > 0)
+            if (agent.ID == 0)
             {
                 var temp = await _merchantRepository.AddMerchant(agent);
                 return Ok(temp);
@@ -62,7 +62,7 @@ namespace ABMS_Backend.Controllers
         public async Task<ActionResult<Merchant>> UpdateMerchant(Merchant agent)
         {
             //return await _merchantRepository.UpdateMerchant(agent);
-            if (agent.Merchant_ID > 0)
+            if (agent.ID > 0)
             {
                 var temp = await _merchantRepository.UpdateMerchant(agent);
                 return Ok(temp);

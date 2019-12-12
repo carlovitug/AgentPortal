@@ -14,8 +14,6 @@ namespace ABMS_Backend.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public string Geolocation { get; set; }
-        public string Telephone { get; set; }
-        public string Email { get; set; }
         public bool Deactivated { get; set; }
         public bool Enrolment { get; set; }
         public bool Withdrawal { get; set; }
