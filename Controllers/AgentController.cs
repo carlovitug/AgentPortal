@@ -47,7 +47,7 @@ namespace ABMS_Backend.Controllers
         [HttpPost("AddAgent")]
         public async Task<ActionResult<Agent>> AddAgent(Agent agent)
         {
-            if(agent.ID > 0)
+            if(agent.ID == 0)
             {
                 var temp = await _agentRepository.AddAgent(agent);
                 return Ok(temp);
