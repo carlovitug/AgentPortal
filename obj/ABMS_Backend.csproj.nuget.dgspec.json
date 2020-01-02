@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj": {}
+    "H:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj": {
+    "H:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj",
+        "projectUniqueName": "H:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj",
         "projectName": "ABMS_Backend",
-        "projectPath": "E:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj",
+        "projectPath": "H:\\Projects\\Ongoing Projects\\ABMS_Backend\\ABMS_Backend.csproj",
         "packagesPath": "C:\\Users\\user2\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Ongoing Projects\\ABMS_Backend\\obj\\",
+        "outputPath": "H:\\Projects\\Ongoing Projects\\ABMS_Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

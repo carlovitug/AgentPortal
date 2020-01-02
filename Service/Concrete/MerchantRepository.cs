@@ -73,8 +73,9 @@ namespace ABMS_Backend.Service.Concrete
                   merchant.BranchID, merchant.Name, merchant.Address, merchant.Geolocation, merchant.Deactivated, 
                   merchant.Enrolment, merchant.Withdrawal, merchant.Purchase, merchant.Inquiry, merchant.User, "C", merchant.ID);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var a = ex.Message;
                 throw;
             }
             return merchant;
