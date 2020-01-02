@@ -11,6 +11,7 @@ namespace ABMS_Backend.Models
         
         public int ID { get; set; }
         public int MerchantID { get; set; }
+        public string MerchantName { get; set; }
         public int OTP { get; set; }
         public bool Deactivated { get; set; }
         public string FirstName { get; set; }
