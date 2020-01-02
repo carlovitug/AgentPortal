@@ -11,6 +11,7 @@ namespace ABMS_Backend.Models
         
         public int ID { get; set; }
         public int  BranchID { get; set; }
+        public string BranchName { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string Geolocation { get; set; }
