@@ -40,3 +40,19 @@ E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.A
 E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorTargetAssemblyInfo.cache
 E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.dll
 E:\Projects\Ongoing Projects\ABMS_Backend\obj\Debug\netcoreapp2.1\ABMS_Backend.pdb
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\appsettings.Development.json
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\appsettings.json
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\ABMS_Backend.deps.json
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\ABMS_Backend.runtimeconfig.json
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\ABMS_Backend.runtimeconfig.dev.json
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\ABMS_Backend.dll
+C:\Users\user4\source\repos\ABMSBackend\bin\Debug\netcoreapp2.1\ABMS_Backend.pdb
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.csprojAssemblyReference.cache
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cache
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorAssemblyInfo.cs
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.AssemblyInfoInputs.cache
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.AssemblyInfo.cs
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorTargetAssemblyInfo.cache
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.dll
+C:\Users\user4\source\repos\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.pdb

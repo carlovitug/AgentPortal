@@ -14,9 +14,9 @@ namespace ABMS_Backend.Models
         }
 
         public DbSet<Agent> Agent { get; set; }
-        public DbSet<Branch> Branch { get; set; }
-        public DbSet<Merchant> Merchant { get; set; }
-        public DbSet<General> General { get; set; }
+        public DbSet<Bank> Bank { get; set; }
+        public DbSet<Contact> Contact { get; set; }
+        public DbSet<Moa> Moa { get; set; }
 
 
     }

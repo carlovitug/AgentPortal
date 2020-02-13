@@ -9,10 +9,9 @@ namespace ABMS_Backend.Service.Contract
 {
     public interface IAgentRepository
     {
-        Task<ActionResult<IEnumerable<Agent>>> GetAgents();
-        Task<Agent> AddAgent(Agent agent);
-        Task<Agent> UpdateAgent(Agent agent);
-        Task<Agent> DeleteAgent(Agent agent);
-        Task<Agent> GetAgent(int id);
+        //Task<ActionResult<IEnumerable<AgentRequest>>> GetAgents();
+        Task<AgentRequest> CreateAgent(AgentRequest agentRequest);
+        //Task<AgentRequest> UpdateAgent(AgentRequest agentRequest);
+        //Task<AgentRequest> DeleteAgent(AgentRequest agentRequest);
     }
 }

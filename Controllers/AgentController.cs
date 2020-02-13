@@ -21,73 +21,35 @@ namespace ABMS_Backend.Controllers
             _agentRepository = agentRepository;
         }
 
-        //Returns list of agents
-        [HttpGet("GetAgents")]
-        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents()
+        [HttpPost("CreateAgent")]
+        public async Task<AgentRequest> CreateAgent([FromBody] AgentRequest agentRequest)
         {
-            return await _agentRepository.GetAgents();
+            var agentResponse = await _agentService.CreateAgent(agentRequest);
+            return agentRequest;
         }
 
-        //Returns an agent
-        [HttpGet("GetAgent")]
-        public async Task<IActionResult> GetAgent(int id)
-        {
-            if(id > 0)
-            {
-                var temp = await _agentRepository.GetAgent(id);
-                return Ok(temp);
-            }
-            else
-            {
-                return BadRequest(new { Message = "Error: Incomplete data." });
-            }
-        }
+        //Update Merchants
+        //[HttpPost("UpdateAgent")]
+        //public async Task<AgentRequest> UpdateAgent([FromBody] AgentRequest agentRequest)
+        //{
+        //    var agentResponse = await _agentService.UpdateAgent(agentRequest);
+        //    return agentResponse;
+        //}
 
-        //Add new agent record
-        [HttpPost("AddAgent")]
-        public async Task<ActionResult<Agent>> AddAgent(Agent agent)
-        {
-            if(agent.ID == 0)
-            {
-                var temp = await _agentRepository.AddAgent(agent);
-                return Ok(temp);
-            }
-            else
-            {
-                return BadRequest(new { Message = "Error: Incomplete data." });
-            }
-            
-        }
+        ////Get all Merchants
+        //[HttpGet("GetAgents")]
+        //public async Task<ActionResult<IEnumerable<AgentRequest>>> GetAgents()
+        //{
+        //    var agentResponse = await _agentRepository.GetAgents();
+        //    return agentResponse;
+        //}
 
-        //Updates agent record
-        [HttpPost("UpdateAgent")]
-        public async Task<ActionResult<Agent>> UpdateAgent(Agent agent)
-        {
-            
-            if(agent.ID > 0)
-            {
-                var temp = await _agentRepository.UpdateAgent(agent);
-                return Ok(temp);
-            }
-            else
-            {
-                return BadRequest(new { Message = "Error: Incomplete data." });
-            }
-        }
-
-        //Delete agent record
-        [HttpGet("DeleteAgent")]
-        public async Task<ActionResult<Agent>> DeleteAgent(int id)
-        {
-            if (id > 0)
-            {
-                var temp = await _agentRepository.DeleteAgent(new Agent { ID = id });
-                return Ok(temp);
-            }
-            else
-            {
-                return BadRequest(new { Message = "Error: Incomplete data." });
-            }
-        }
+        ////Delete Merchants
+        //[HttpPost("DeleteAgent")]
+        //public async Task<AgentRequest> DeleteMerchant([FromBody] int agentRequest)
+        //{
+        //    var agentResponse = await _agentService.DeleteAgent(agentRequest);
+        //    return agentResponse;
+        //}
     }
 }

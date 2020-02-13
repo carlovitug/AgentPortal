@@ -44,8 +44,6 @@ namespace ABMS_Backend
 
             services.AddTransient<IAgentService, AgentService>();
             services.AddTransient<IAgentRepository, AgentRepository>();
-            services.AddTransient<IBranchRepository, BranchRepository>();
-            services.AddTransient<IMerchantRepository, MerchantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
