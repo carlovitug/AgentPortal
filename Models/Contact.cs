@@ -9,8 +9,8 @@ namespace ABMS_Backend.Models
     public class Contact
     {
         public int ID { get; set; }
-        public int RequestID { get; set; }
-        public int ApplicationID { get; set; }
+        public string RequestID { get; set; }
+        public string ApplicationID { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -27,5 +27,6 @@ namespace ABMS_Backend.Models
         public DateTime UpdateDeteTime { get; set; }
         public string UserCreate { get; set; }
         public string LastUserUpdate { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

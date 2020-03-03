@@ -9,7 +9,7 @@ namespace ABMS_Backend.Service.Contract
     public interface IAgentService
     {
         Task<AgentRequest> CreateAgent(AgentRequest agentRequest);
-        //Task<AgentRequest> UpdateAgent(AgentRequest agentRequest);
+        Task<AgentRequest> UpdateAgent(AgentRequest agentRequest);
         //Task<AgentRequest> DeleteAgent(int agentRequest);
     }
 }

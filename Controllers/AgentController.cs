@@ -29,27 +29,48 @@ namespace ABMS_Backend.Controllers
         }
 
         //Update Merchants
-        //[HttpPost("UpdateAgent")]
-        //public async Task<AgentRequest> UpdateAgent([FromBody] AgentRequest agentRequest)
-        //{
-        //    var agentResponse = await _agentService.UpdateAgent(agentRequest);
-        //    return agentResponse;
-        //}
+        [HttpPost("UpdateAgent")]
+        public async Task<AgentRequest> UpdateAgent([FromBody] AgentRequest agentRequest)
+        {
+            var agentResponse = await _agentService.UpdateAgent(agentRequest);
+            return agentResponse;
+        }
 
         ////Get all Merchants
-        //[HttpGet("GetAgents")]
-        //public async Task<ActionResult<IEnumerable<AgentRequest>>> GetAgents()
-        //{
-        //    var agentResponse = await _agentRepository.GetAgents();
-        //    return agentResponse;
-        //}
+        [HttpGet("GetAgents")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents()
+        {
+            var agentResponse = await _agentRepository.GetAgents();
+            return agentResponse;
+        }
 
-        ////Delete Merchants
-        //[HttpPost("DeleteAgent")]
-        //public async Task<AgentRequest> DeleteMerchant([FromBody] int agentRequest)
-        //{
-        //    var agentResponse = await _agentService.DeleteAgent(agentRequest);
-        //    return agentResponse;
-        //}
+        [HttpGet("GetMasterAgents")]
+        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents()
+        {
+            var agentResponse = await _agentRepository.GetMasterAgents();
+            return agentResponse;
+        }
+
+        [HttpPost("GetSubAgents")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetSubAgents([FromBody] int agentRequestID)
+        {
+            var agentResponse = await _agentRepository.GetSubAgents(agentRequestID);
+            return agentResponse;
+        }
+
+        [HttpPost("GetMasterAgentID")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetMasterAgentID([FromBody] int agentRequestID)
+        {
+            var agentResponse = await _agentRepository.GetMasterAgentID(agentRequestID);
+            return agentResponse;
+        }
+
+        //Delete Merchants
+        [HttpPost("DeleteAgent")]
+        public async Task<int> DeleteMerchant([FromBody] int agentRequestID)
+        {
+            var agentResponse = await _agentRepository.DeleteAgent(agentRequestID);
+            return agentResponse;
+        }
     }
 }

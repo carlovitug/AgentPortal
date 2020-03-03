@@ -5,19 +5,13 @@ using System.Threading.Tasks;
 
 namespace ABMS_Backend.Models
 {
-    public class Moa
+    public class Terminal
     {
         public int ID { get; set; }
         public string RequestID { get; set; }
         public string ApplicationID { get; set; }
-        public int AuthID { get; set; }
-        public string AuthFirstName { get; set; }
-        public string AuthMiddleName { get; set; }
-        public string AuthLastName { get; set; }
-        public string AuthDesignation { get; set; }
-        public string ValidIDType { get; set; }
-        public string ValidIDNumber { get; set; }
-        public string ValidIDExpdate { get; set; }
+        public string POSTerminalName { get; set; }
+        public string TypeOfPOSTerminal { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime UpdateDeteTime { get; set; }
         public string UserCreate { get; set; }

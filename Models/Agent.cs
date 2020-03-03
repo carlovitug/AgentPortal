@@ -10,8 +10,8 @@ namespace ABMS_Backend.Models
     {
 
         public int ID { get; set; }
-        public Guid RequestID { get; set; }
-        public int ApplicationID { get; set; }
+        public string RequestID { get; set; }
+        public string ApplicationID { get; set; }
         public int MasterAgentCodeID { get; set; }
         public int SubAgentCodeID { get; set; }
         public int AgentID { get; set; }
@@ -35,8 +35,8 @@ namespace ABMS_Backend.Models
         public int DailyDepositLimit { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime UpdateDeteTime { get; set; }
-        public string UserCrete { get; set; }
+        public string UserCreate { get; set; }
         public string LastUserUpdate { get; set; }
-
+        public bool IsDeleted { get; set; }
     }
 }

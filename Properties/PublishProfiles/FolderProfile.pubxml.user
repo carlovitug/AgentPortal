@@ -8,4 +8,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>D:\Publish\ABMS</_PublishTargetUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=192.168.62.13%3bDatabase=ABMS_AllBank_Test%3bUser Id=mark.tinaliga%3bPassword=P%40ss1234%3bTrusted_Connection=True%3bIntegrated Security=False%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>

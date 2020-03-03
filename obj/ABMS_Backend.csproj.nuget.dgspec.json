@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user4\\source\\repos\\ABMSBackend\\ABMS_Backend.csproj": {}
+    "C:\\Users\\user4\\source\\repos\\ABMS\\ABMSBackend\\ABMS_Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user4\\source\\repos\\ABMSBackend\\ABMS_Backend.csproj": {
+    "C:\\Users\\user4\\source\\repos\\ABMS\\ABMSBackend\\ABMS_Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user4\\source\\repos\\ABMSBackend\\ABMS_Backend.csproj",
+        "projectUniqueName": "C:\\Users\\user4\\source\\repos\\ABMS\\ABMSBackend\\ABMS_Backend.csproj",
         "projectName": "ABMS_Backend",
-        "projectPath": "C:\\Users\\user4\\source\\repos\\ABMSBackend\\ABMS_Backend.csproj",
+        "projectPath": "C:\\Users\\user4\\source\\repos\\ABMS\\ABMSBackend\\ABMS_Backend.csproj",
         "packagesPath": "C:\\Users\\user4\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user4\\source\\repos\\ABMSBackend\\obj\\",
+        "outputPath": "C:\\Users\\user4\\source\\repos\\ABMS\\ABMSBackend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -59,6 +59,10 @@
               "target": "Package",
               "version": "[2.1.0, )",
               "autoReferenced": true
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[2.1.10, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
