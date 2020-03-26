@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ABMS_Backend.Models
 {
-    public class AgentRequest
+    public class AgentRequestEdit
     {
-        //public Agent agent { get; set; }
-        //public Bank bank { get; set; }
-        //public Contact contact { get; set; }
-        //public Moa moa { get; set; }
         public string User { get; set; }
+        public string RequestID { get; set; }
+        public string ApplicationID { get; set; }
         public string MasterSubID { get; set; }
+        public string SubmasterAgentCode { get; set; }
         public string Masteridlist { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
@@ -33,6 +31,7 @@ namespace ABMS_Backend.Models
         public string PostalCode { get; set; }
         public string Comptin { get; set; }
         public string CTCNo { get; set; }
+        public string Status { get; set; }
         public MoaRequest[] Auth { get; set; }
         public AgentBranchesRequest[] AgentBranches { get; set; }
         public TerminalRequest[] Terminal { get; set; }
@@ -61,6 +60,8 @@ namespace ABMS_Backend.Models
         public string RBOMiddleName { get; set; }
         public string RBOEmailAdd { get; set; }
         public string RBOContactNo { get; set; }
+        public string AgentID { get; set; }
+        public string MerchantID { get; set; }
         public BankFeesRequest[] BankFeesList { get; set; }
     }
 }

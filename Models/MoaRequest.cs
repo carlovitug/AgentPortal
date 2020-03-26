@@ -12,7 +12,7 @@ namespace ABMS_Backend.Models
         public string AuthLastName { get; set; }
         public string AuthDesignation { get; set; }
         public string ValidIDType { get; set; }
-        public string ValidIDNumber { get; set; }
+        public string ValidIDNo{ get; set; }
         public string ValidIDExpdate { get; set; }
     }
 }

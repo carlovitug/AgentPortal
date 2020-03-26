@@ -17,8 +17,12 @@ namespace ABMS_Backend.Models
         public DbSet<Contact> Contact { get; set; }
         public DbSet<Moa> Moa { get; set; }
         public DbSet<Terminal> Terminal { get; set; }
+        public DbSet<BankFees> BankFees { get; set; }
+        
+        public DbSet<AgentInformation> AgentInformation { get; set; }
         public DbSet<UserAccounts> UserInformation { get; set; }
         public DbSet<AgentBranches> AgentBranches { get; set; }
         public DbSet<MasterAgentID> MasterAgentID { get; set; }
+        public DbSet<RequestIDModel> RequestID { get; set; }
     }
 }

@@ -88,3 +88,5 @@ C:\Users\user4\source\repos\ABMS\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backen
 C:\Users\user4\source\repos\ABMS\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.RazorTargetAssemblyInfo.cache
 C:\Users\user4\source\repos\ABMS\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.dll
 C:\Users\user4\source\repos\ABMS\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.pdb
+C:\Users\user4\source\repos\ABMS\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.Properties.Resources.resources
+C:\Users\user4\source\repos\ABMS\ABMSBackend\obj\Debug\netcoreapp2.1\ABMS_Backend.csproj.GenerateResource.cache

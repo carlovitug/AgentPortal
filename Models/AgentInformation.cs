@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ABMS_Backend.Models
 {
-    public class Agent
+    public class AgentInformation
     {
 
         public int ID { get; set; }
@@ -37,7 +37,6 @@ namespace ABMS_Backend.Models
         public DateTime UpdateDeteTime { get; set; }
         public string UserCreate { get; set; }
         public string LastUserUpdate { get; set; }
-        public string Status { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

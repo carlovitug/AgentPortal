@@ -1,5 +1,6 @@
 ﻿using ABMS_Backend.Models;
 using ABMS_Backend.Service.Contract;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,30 @@ namespace ABMS_Backend.Service.Concrete
         {
             _agentRepository = agentRepository;
         }
+
+        public async Task<AgentList> GetAgentwithID([FromBody] int id)
+        {
+            string request = await _agentRepository.GetRequestID(id);
+
+            var response = await _agentRepository.GetAgentwithID(request);
+
+            AgentList agentList = new AgentList();
+            agentList.Agent = response.Item1;
+            agentList.Bank = response.Item2;
+            agentList.Contact = response.Item3;
+            agentList.AgentBranches = response.Item4;
+            agentList.Terminal = response.Item5;
+            agentList.BankFees = response.Item6;
+            agentList.Moa = response.Item7;
+
+            return agentList;
+        }
         public async Task<AgentRequest> CreateAgent(AgentRequest agentRequest)
         {
             string generatedRequestID = Guid.NewGuid().ToString("N").Substring(0, 12);
             string generatedApplicationID = Guid.NewGuid().ToString("N").Substring(0, 12);
             int agentID = CreateAgentID();
+            int authID = CreateAgentID();
             int masterAgentCode = 0;
             int submasteragentCode = 0;
 
@@ -32,21 +52,7 @@ namespace ABMS_Backend.Service.Concrete
                 masterAgentCode = CreateMasterSubID();
                 submasteragentCode = 0;
             }
-            //var isAgentExist = await _agentRepository.CheckExistingAgentID(agentID);
-            //agentRequest.agent.AgentID = agentID;
-            //agentRequest.agent.ApplicationID = generatedApplicationID;
-            //agentRequest.bank.ApplicationID = generatedApplicationID;
-            //agentRequest.contact.ApplicationID = generatedApplicationID;
-            //agentRequest.moa.ApplicationID = generatedApplicationID;
-            //agentRequest.agent.RequestID = generatedRequestID;
-            //agentRequest.bank.RequestID = generatedRequestID;
-            //agentRequest.contact.RequestID = generatedRequestID;
-            //agentRequest.moa.RequestID = generatedRequestID;
-            //agentRequest.agent.IsDeleted = false;
-            //agentRequest.bank.IsDeleted = false;
-            //agentRequest.contact.IsDeleted = false;
-            //agentRequest.moa.IsDeleted = false;
-
+           
             Agent agent = new Agent
             {
                 AgentID = agentID,
@@ -58,11 +64,11 @@ namespace ABMS_Backend.Service.Concrete
                 Country = agentRequest.Country,
                 CreatedDateTime = DateTime.Now,
                 CTCNo = Convert.ToInt32(agentRequest.CTCNo),
-                DailyDepositLimit = 30000,
+                DailyDepositLimit = agentRequest.DailyDepLimit,
                 FirstName = agentRequest.FirstName,
-                IsBusiness = false,
-                IsCorporate = false,
-                IsMerchCategory = false,
+                IsBusiness = agentRequest.IsBusinessName != null ? bool.Parse(agentRequest.IsBusinessName) : false,
+                IsCorporate = agentRequest.IsCorpName != null ? bool.Parse(agentRequest.IsCorpName) : false,
+                IsMerchCategory = agentRequest.IsMerchcategory != null ? bool.Parse(agentRequest.IsMerchcategory) : false,
                 LastName = agentRequest.LastName,
                 LastUserUpdate = agentRequest.User,
                 MasterAgentCodeID = masterAgentCode,
@@ -76,6 +82,7 @@ namespace ABMS_Backend.Service.Concrete
                 Town = agentRequest.Town,
                 UpdateDeteTime = DateTime.Now,
                 UserCreate = agentRequest.User,
+                Status = "Pending",
                 IsDeleted = false
             };
 
@@ -126,17 +133,28 @@ namespace ABMS_Backend.Service.Concrete
                 IsDeleted = false
             };
 
-            AgentBranches agentBranches = new AgentBranches
-            { 
-                ApplicationID = generatedApplicationID,
-                RequestID = generatedRequestID,
-                NoAgentOutletsOrBranches = agentRequest.NoofAgent,
-                UserCreate = agentRequest.User,
-                CreatedDateTime = DateTime.Now,
-                LastUserUpdate = agentRequest.User,
-                UpdateDeteTime = DateTime.Now,
-                IsDeleted = false
-            };
+            for (int i = 0; i < agentRequest.AgentBranches?.Count(); i++)
+            {
+                AgentBranches agentBranches = new AgentBranches
+                {
+                    ApplicationID = generatedApplicationID,
+                    RequestID = generatedRequestID,
+                    AgentBranchName = agentRequest.AgentBranches[i].ABranchName,
+                    StreetNo = agentRequest.AgentBranches[i].AStreetNo,
+                    Town = agentRequest.AgentBranches[i].ATown,
+                    City = agentRequest.AgentBranches[i].ACity,
+                    Country = agentRequest.AgentBranches[i].Acountry,
+                    PostalCode = Convert.ToInt32(agentRequest.AgentBranches[i].APostalCode),
+                    PhoneNo = agentRequest.AgentBranches[i].APhoneNo,
+                    UserCreate = agentRequest.User,
+                    CreatedDateTime = DateTime.Now,
+                    LastUserUpdate = agentRequest.User,
+                    UpdateDeteTime = DateTime.Now,
+                    IsDeleted = false
+                };
+                var agentBranchesResponse = await _agentRepository.CreateAgentBranches(agentBranches);
+            }
+            
 
             for (int i = 0; i < agentRequest.Terminal?.Count() ; i++)
             {
@@ -162,7 +180,7 @@ namespace ABMS_Backend.Service.Concrete
                     ApplicationID = generatedApplicationID,
                     AuthDesignation = agentRequest.Auth[i].AuthDesignation,
                     AuthFirstName = agentRequest.Auth[i].AuthFirstName,
-                    AuthID = CreateAgentID(),
+                    AuthID = authID,
                     AuthLastName = agentRequest.Auth[i].AuthLastName,
                     AuthMiddleName = agentRequest.Auth[i].AuthMiddleName,
                     CreatedDateTime = DateTime.Now,
@@ -171,119 +189,213 @@ namespace ABMS_Backend.Service.Concrete
                     UpdateDeteTime = DateTime.Now,
                     UserCreate = agentRequest.User,
                     ValidIDExpdate = agentRequest.Auth[i].ValidIDExpdate,
-                    ValidIDNumber = agentRequest.Auth[i].ValidIDNumber,
+                    ValidIDNumber = agentRequest.Auth[i].ValidIDNo,
                     ValidIDType = agentRequest.Auth[i].ValidIDType
                 };
                 var moaResponse = await _agentRepository.CreateMoa(moa);
-            }            
+            }
 
-            var agentResponse = await _agentRepository.CreateAgent(agent, bank, contact, agentBranches);
+            for (int i = 0; i < agentRequest.BankFeesList?.Count(); i++)
+            {
+                BankFees bankFees = new BankFees
+                {
+                    ApplicationID = generatedApplicationID,
+                    RequestID = generatedRequestID,
+                    AgentID = agentID,
+                    MerchantID = agentID.ToString(),
+                    TransactionType = agentRequest.BankFeesList[i].TransName,
+                    ConvenienceFee = agentRequest.BankFeesList[i].ConvFee,
+                    Quota = null,
+                    CreatedDateTime = DateTime.Now,
+                    UserCreate = agentRequest.User,
+                    LastUserUpdate = agentRequest.User,
+                    UpdateDeteTime = DateTime.Now,
+                    IsDeleted = false
+                };
+                var bankResponse = await _agentRepository.CreateBankFees(bankFees);
+            }
+
+            var agentResponse = await _agentRepository.CreateAgent(agent, bank, contact);
             return agentRequest;
         }
 
-        public async Task<AgentRequest> UpdateAgent(AgentRequest agentRequest)
+        public async Task<AgentRequestEdit> UpdateAgent(AgentRequestEdit agentRequestEdit)
         {
-            //agentRequest.agent.UpdateDeteTime = DateTime.Now;
-            //agentRequest.bank.UpdateDeteTime = DateTime.Now;
-            //agentRequest.moa.UpdateDeteTime = DateTime.Now;
-            //agentRequest.contact.UpdateDeteTime = DateTime.Now;
+            Agent agent = new Agent
+            {
+                AgentID = Convert.ToInt32(agentRequestEdit.AgentID),
+                ApplicationID = agentRequestEdit.ApplicationID,
+                BusinessName = agentRequestEdit.BusinessName,
+                City = agentRequestEdit.City,
+                CompanyTIN = agentRequestEdit.Comptin,
+                CorporateName = agentRequestEdit.CorpName,
+                Country = agentRequestEdit.Country,
+                CTCNo = Convert.ToInt32(agentRequestEdit.CTCNo),
+                DailyDepositLimit = agentRequestEdit.DailyDepLimit,
+                FirstName = agentRequestEdit.FirstName,
+                IsBusiness = agentRequestEdit.IsBusinessName != null ? bool.Parse(agentRequestEdit.IsBusinessName) : false,
+                IsCorporate = agentRequestEdit.IsCorpName != null ? bool.Parse(agentRequestEdit.IsCorpName) : false,
+                IsMerchCategory = agentRequestEdit.IsMerchcategory != null ? bool.Parse(agentRequestEdit.IsMerchcategory) : false,
+                LastName = agentRequestEdit.LastName,
+                LastUserUpdate = agentRequestEdit.User,
+                MasterAgentCodeID = Convert.ToInt32(agentRequestEdit.Masteridlist),
+                MerchantCategory = agentRequestEdit.Merchcategory,
+                MiddleName = agentRequestEdit.MiddleName,
+                PhoneNo = agentRequestEdit.PhoneNo,
+                PostalCode = Convert.ToInt32(agentRequestEdit.PostalCode),
+                RequestID = agentRequestEdit.RequestID,
+                StreetNo = agentRequestEdit.StreetNo,
+                SubAgentCodeID = Convert.ToInt32(agentRequestEdit.SubmasterAgentCode),
+                Town = agentRequestEdit.Town,
+                UpdateDeteTime = DateTime.Now,
+                Status = "Pending",
+                IsDeleted = false
+            };
 
-            //    Agent agent = new Agent
-            //    {
-            //        AgentID = agentID,
-            //        ApplicationID = generatedApplicationID,
-            //        BusinessName = agentRequest.agent.BusinessName,
-            //        City = agentRequest.agent.City,
-            //        CompanyTIN = agentRequest.agent.CompanyTIN,
-            //        CorporateName = agentRequest.agent.CorporateName,
-            //        Country = agentRequest.agent.Country,
-            //        CreatedDateTime = DateTime.Now,
-            //        CTCNo = agentRequest.agent.CTCNo,
-            //        DailyDepositLimit = agentRequest.agent.DailyDepositLimit,
-            //        FirstName = agentRequest.agent.FirstName,
-            //        IsBusiness = agentRequest.agent.IsBusiness,
-            //        IsCorporate = agentRequest.agent.IsCorporate,
-            //        IsMerchCategory = agentRequest.agent.IsMerchCategory,
-            //        LastName = agentRequest.agent.LastName,
-            //        LastUserUpdate = agentRequest.agent.LastUserUpdate,
-            //        MasterAgentCodeID = 1234,
-            //        MerchantCategory = agentRequest.agent.MerchantCategory,
-            //        MiddleName = agentRequest.agent.MiddleName,
-            //        PhoneNo = agentRequest.agent.PhoneNo,
-            //        PostalCode = agentRequest.agent.PostalCode,
-            //        RequestID = generatedRequestID,
-            //        StreetNo = agentRequest.agent.StreetNo,
-            //        SubAgentCodeID = 1234,
-            //        Town = agentRequest.agent.Town,
-            //        UpdateDeteTime = DateTime.Now,
-            //        UserCrete = agentRequest.agent.UserCrete
-            //};
+            Bank bank = new Bank
+            {
+                ApplicationID = agentRequestEdit.ApplicationID,
+                BankAccountName = agentRequestEdit.Bankaccname,
+                City = agentRequestEdit.BCity,
+                Country = agentRequestEdit.BCountry,
+                DepositoryBank = agentRequestEdit.DepBank,
+                LastUserUpdate = agentRequestEdit.User,
+                PostalCode = Convert.ToInt32(agentRequestEdit.BPostalCode),
+                RBOContactNo = agentRequestEdit.RBOContactNo,
+                RBOEmailAdd = agentRequestEdit.RBOEmailAdd,
+                RBOFName = agentRequestEdit.RBOFirstName,
+                RBOLName = agentRequestEdit.RBOLastName,
+                RBOMName = agentRequestEdit.RBOMiddleName,
+                RBOType = agentRequestEdit.RBOType,
+                RequestID = agentRequestEdit.RequestID,
+                StreetNo = agentRequestEdit.BStreetNo,
+                Town = agentRequestEdit.BTown,
+                UpdateDeteTime = DateTime.Now,
+                IsDeleted = false
+            };
 
-            //    Bank bank = new Bank
-            //    {
-            //        ApplicationID = generatedApplicationID,
-            //        BankAccountName = agentRequest.bank.BankAccountName,
-            //        City = agentRequest.bank.City,
-            //        Country = agentRequest.bank.Country,
-            //        CreatedDateTime = DateTime.Now,
-            //        DepositoryBank = agentRequest.bank.DepositoryBank,
-            //        LastUserUpdate = agentRequest.bank.LastUserUpdate,
-            //        PostalCode = agentRequest.bank.PostalCode,
-            //        RBOContactNo = agentRequest.bank.RBOContactNo,
-            //        RBOEmailAdd = agentRequest.bank.RBOEmailAdd,
-            //        RBOFName = agentRequest.bank.RBOFName,
-            //        RBOLName = agentRequest.bank.RBOLName,
-            //        RBOMName = agentRequest.bank.RBOMName,
-            //        RBOType = agentRequest.bank.RBOType,
-            //        RequestID = generatedRequestID,
-            //        StreetNo = agentRequest.bank.StreetNo,
-            //        Town = agentRequest.bank.Town,
-            //        UpdateDeteTime = DateTime.Now,
-            //        UserCreate = agentRequest.bank.UserCreate
-            //    };
+            Contact contact = new Contact
+            {
+                ApplicationID = agentRequestEdit.ApplicationID,
+                BillingContactNo = Convert.ToInt32(agentRequestEdit.CBillContactNo),
+                BillingFirstName = agentRequestEdit.CBillFName,
+                BillingLastName = agentRequestEdit.CBillLName,
+                BillingMiddleName = agentRequestEdit.CBillMName,
+                ContactNo = agentRequestEdit.CContactno,
+                Department = agentRequestEdit.CDepartment,
+                Designation = agentRequestEdit.CDesignation,
+                EmailAddress = agentRequestEdit.CEmailAdd,
+                FaxNo = agentRequestEdit.CFaxno,
+                FirstName = agentRequestEdit.CFirstName,
+                LastName = agentRequestEdit.CLastName,
+                LastUserUpdate = agentRequestEdit.User,
+                MiddleName = agentRequestEdit.CMiddleName,
+                RequestID = agentRequestEdit.RequestID,
+                UpdateDeteTime = DateTime.Now,
+                IsDeleted = false
+            };
 
-            //    Contact contact = new Contact
-            //    {
-            //        ApplicationID = generatedApplicationID,
-            //        BillingContactNo = agentRequest.contact.BillingContactNo,
-            //        BillingFirstName = agentRequest.contact.BillingFirstName,
-            //        BillingLastName = agentRequest.contact.BillingLastName,
-            //        BillingMiddleName = agentRequest.contact.BillingMiddleName,
-            //        ContactNo = agentRequest.contact.ContactNo,
-            //        CreatedDateTime = DateTime.Now,
-            //        Department = agentRequest.contact.Department,
-            //        Designation = agentRequest.contact.Designation,
-            //        EmailAddress = agentRequest.contact.EmailAddress,
-            //        FaxNo = agentRequest.contact.FaxNo,
-            //        FirstName = agentRequest.agent.FirstName,
-            //        LastName = agentRequest.agent.LastName,
-            //        LastUserUpdate = agentRequest.agent.LastUserUpdate,
-            //        MiddleName = agentRequest.agent.MiddleName,
-            //        RequestID = generatedRequestID,
-            //        UpdateDeteTime = DateTime.Now,
-            //        UserCreate = agentRequest.contact.UserCreate
-            //    };
+            for (int i = 0; i < agentRequestEdit.AgentBranches?.Count(); i++)
+            {
+                if(i == 0)
+                {
+                    await _agentRepository.DeleteAgentBranches(agentRequestEdit.RequestID);
+                }
+                AgentBranches agentBranches = new AgentBranches
+                {
+                    ApplicationID = agentRequestEdit.ApplicationID,
+                    RequestID = agentRequestEdit.RequestID,
+                    AgentBranchName = agentRequestEdit.AgentBranches[i].ABranchName,
+                    StreetNo = agentRequestEdit.AgentBranches[i].AStreetNo,
+                    Town = agentRequestEdit.AgentBranches[i].ATown,
+                    City = agentRequestEdit.AgentBranches[i].ACity,
+                    Country = agentRequestEdit.AgentBranches[i].Acountry,
+                    PostalCode = Convert.ToInt32(agentRequestEdit.AgentBranches[i].APostalCode),
+                    PhoneNo = agentRequestEdit.AgentBranches[i].APhoneNo,
+                    CreatedDateTime = DateTime.Now,
+                    UserCreate = agentRequestEdit.User,
+                    LastUserUpdate = agentRequestEdit.User,
+                    UpdateDeteTime = DateTime.Now,
+                    IsDeleted = false
+                };
+                var agentBranchesResponse = await _agentRepository.UpdateAgentBranches(agentBranches);
+            }
 
-            //    Moa moa = new Moa
-            //    {
-            //        ApplicationID = generatedApplicationID,
-            //        AuthDesignation = agentRequest.moa.AuthDesignation,
-            //        AuthFirstName = agentRequest.moa.AuthFirstName,
-            //        AuthID = CreateAgentID(),
-            //        AuthLastName = agentRequest.moa.AuthLastName,
-            //        AuthMiddleName = agentRequest.moa.AuthMiddleName,
-            //        CreateDateTime = DateTime.Now,
-            //        LastUserUpdate = agentRequest.moa.LastUserUpdate,
-            //        RequestID = generatedRequestID,
-            //        UpdateDeteTime = DateTime.Now,
-            //        UserCreate = agentRequest.moa.UserCreate,
-            //        ValidIDExpdate = agentRequest.moa.ValidIDExpdate,
-            //        ValidIDNumber = agentRequest.moa.ValidIDNumber,
-            //        ValidIDType = agentRequest.moa.ValidIDType
-            //    };
 
-            var agentResponse = await _agentRepository.UpdateAgent(agentRequest);
-            return agentResponse;
+            for (int i = 0; i < agentRequestEdit.Terminal?.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    await _agentRepository.DeleteTerminal(agentRequestEdit.RequestID);
+                }
+                Terminal terminal = new Terminal
+                {
+                    ApplicationID = agentRequestEdit.ApplicationID,
+                    RequestID = agentRequestEdit.RequestID,
+                    POSTerminalName = agentRequestEdit.Terminal[i].TerminalName,
+                    TypeOfPOSTerminal = agentRequestEdit.Terminal[i].TerminalType,
+                    CreatedDateTime = DateTime.Now,
+                    UserCreate = agentRequestEdit.User,
+                    LastUserUpdate = agentRequestEdit.User,
+                    UpdateDeteTime = DateTime.Now,
+                    IsDeleted = false
+                };
+                var terminalResponse = await _agentRepository.UpdateTerminal(terminal);
+            }
+
+            for (int i = 0; i < agentRequestEdit.Auth?.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    await _agentRepository.DeleteMoa(agentRequestEdit.RequestID);
+                }
+                Moa moa = new Moa
+                {
+                    ApplicationID = agentRequestEdit.ApplicationID,
+                    AuthDesignation = agentRequestEdit.Auth[i].AuthDesignation,
+                    AuthFirstName = agentRequestEdit.Auth[i].AuthFirstName,
+                    AuthID = CreateAgentID(),
+                    AuthLastName = agentRequestEdit.Auth[i].AuthLastName,
+                    AuthMiddleName = agentRequestEdit.Auth[i].AuthMiddleName,
+                    LastUserUpdate = agentRequestEdit.User,
+                    RequestID = agentRequestEdit.RequestID,
+                    UpdateDeteTime = DateTime.Now,
+                    ValidIDExpdate = agentRequestEdit.Auth[i].ValidIDExpdate,
+                    ValidIDNumber = agentRequestEdit.Auth[i].ValidIDNo,
+                    ValidIDType = agentRequestEdit.Auth[i].ValidIDType,
+                    CreatedDateTime = DateTime.Now,
+                    UserCreate = agentRequestEdit.User
+                };
+                var moaResponse = await _agentRepository.UpdateMoa(moa);
+            }
+
+            for (int i = 0; i < agentRequestEdit.BankFeesList?.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    await _agentRepository.DeleteBankFees(agentRequestEdit.RequestID);
+                }
+                BankFees bankFees = new BankFees
+                {
+                    ApplicationID = agentRequestEdit.ApplicationID,
+                    RequestID = agentRequestEdit.RequestID,
+                    AgentID = Convert.ToInt32(agentRequestEdit.AgentID),
+                    MerchantID = agentRequestEdit.MerchantID,
+                    TransactionType = agentRequestEdit.BankFeesList[i].TransName,
+                    ConvenienceFee = agentRequestEdit.BankFeesList[i].ConvFee,
+                    Quota = null,
+                    CreatedDateTime = DateTime.Now,
+                    UserCreate = agentRequestEdit.User,
+                    LastUserUpdate = agentRequestEdit.User,
+                    UpdateDeteTime = DateTime.Now,
+                    IsDeleted = false
+                };
+                var bankResponse = await _agentRepository.UpdateBankFees(bankFees);
+            }
+
+            var agentResponse = await _agentRepository.UpdateAgent(agent, bank, contact);
+            return agentRequestEdit;
+
         }
 
         public static int CreateAgentID()

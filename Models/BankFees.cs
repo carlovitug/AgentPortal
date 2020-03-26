@@ -5,18 +5,16 @@ using System.Threading.Tasks;
 
 namespace ABMS_Backend.Models
 {
-    public class AgentBranches
+    public class BankFees
     {
         public int ID { get; set; }
         public string RequestID { get; set; }
         public string ApplicationID { get; set; }
-        public string AgentBranchName { get; set; }
-        public string StreetNo { get; set; }
-        public string Town { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public int PostalCode { get; set; }
-        public string PhoneNo { get; set; }
+        public int AgentID { get; set; }
+        public string MerchantID { get; set; }
+        public string TransactionType { get; set; }
+        public string ConvenienceFee { get; set; }
+        public string Quota { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime UpdateDeteTime { get; set; }
         public string UserCreate { get; set; }

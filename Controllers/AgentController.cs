@@ -25,14 +25,21 @@ namespace ABMS_Backend.Controllers
         public async Task<AgentRequest> CreateAgent([FromBody] AgentRequest agentRequest)
         {
             var agentResponse = await _agentService.CreateAgent(agentRequest);
-            return agentRequest;
+            return agentRequest;    
         }
 
         //Update Merchants
         [HttpPost("UpdateAgent")]
-        public async Task<AgentRequest> UpdateAgent([FromBody] AgentRequest agentRequest)
+        public async Task<AgentRequestEdit> UpdateAgent([FromBody] AgentRequestEdit agentRequestEdit)
         {
-            var agentResponse = await _agentService.UpdateAgent(agentRequest);
+            var agentResponse = await _agentService.UpdateAgent(agentRequestEdit);
+            return agentResponse;
+        }
+
+        [HttpPost("ChangeStatus")]
+        public async Task<ChangeStatus> ChangeStatus(ChangeStatus status)
+        {
+            var agentResponse = await _agentRepository.ChangeStatus(status);
             return agentResponse;
         }
 
@@ -41,6 +48,21 @@ namespace ABMS_Backend.Controllers
         public async Task<ActionResult<IEnumerable<Agent>>> GetAgents()
         {
             var agentResponse = await _agentRepository.GetAgents();
+            return agentResponse;
+        }
+
+        [HttpGet("GetPendingAgents")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents()
+        {
+            var agentResponse = await _agentRepository.GetPendingAgents();
+            return agentResponse;
+        }
+
+        ////Get all Merchants
+        [HttpPost("GetAgentwithID")]
+        public async Task<AgentList> GetAgentwithID([FromBody] int id)
+        {
+            var agentResponse = await _agentService.GetAgentwithID(id);
             return agentResponse;
         }
 

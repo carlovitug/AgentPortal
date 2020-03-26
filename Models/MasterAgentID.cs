@@ -10,5 +10,8 @@ namespace ABMS_Backend.Models
     {
         [Key]
         public int MasterAgentCodeID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MiddleName { get; set; }
     }
 }
