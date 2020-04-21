@@ -31,7 +31,7 @@ namespace ABMS_Backend.Models
         public string Country { get; set; }
         public int PostalCode { get; set; }
         public string CompanyTIN { get; set; }
-        public int CTCNo { get; set; }
+        public string CTCNo { get; set; }
         public int DailyDepositLimit { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime UpdateDeteTime { get; set; }

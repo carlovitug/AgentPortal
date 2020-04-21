@@ -38,7 +38,7 @@ namespace ABMS_Backend
             });
             var temp = Configuration;
             services.AddDbContext<ABMSContext>(options =>
-           options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
 
@@ -74,6 +74,7 @@ namespace ABMS_Backend
 
             app.UseCors(options =>
             options.WithOrigins("http://localhost:4200")
+            //options.WithOrigins("https://sms4.mobi724.com.ph")
             //options.WithOrigins("http://192.168.70.10:80")
             .AllowAnyMethod()
             .AllowAnyHeader());

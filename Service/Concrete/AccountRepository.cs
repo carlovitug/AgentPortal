@@ -19,15 +19,17 @@ namespace ABMS_Backend.Service.Concrete
 
         public async Task<Tuple<bool, UserAccounts>> GetUser(Login login)
         {
-            bool result = await _context.UserInformation.AnyAsync(x => x.Username == login.Username && x.Password == login.Password);
-            var userAccounts = await _context.UserInformation.Where(x => x.Username == login.Username && x.Password == login.Password).Select(x => x).FirstOrDefaultAsync();
+            bool result = await _context.UserInformation.AnyAsync(x => x.Username == login.Username && x.Password == login.Password && x.ApplicationId == login.ApplicationId.ToString());
+            var userAccounts = await _context.UserInformation.Where(x => x.Username == login.Username && x.Password == login.Password && x.ApplicationId == login.ApplicationId.ToString()).Select(x => x).FirstOrDefaultAsync();
             return Tuple.Create(result, userAccounts);
         }
 
-        public async Task<ActionResult<IEnumerable<UserAccounts>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserAccounts>>> GetAllUsers(int applicationId)
         {
+           
             List<UserAccounts> userAccounts = new List<UserAccounts>();
-            userAccounts = await _context.UserInformation.FromSql("dbo.SP_UserInformationReadAll").ToListAsync();
+            userAccounts = await _context.UserInformation.FromSql("dbo.SP_UserInformationReadAll " +
+                       "@applicationID = {0} ", applicationId).ToListAsync();
             return userAccounts;
         }
 
@@ -37,9 +39,9 @@ namespace ABMS_Backend.Service.Concrete
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_UserInformationCreate " +
                      "@id = {0}, @email = {1}, @fullname = {2}, @isactive = {3}, @ischanged  = {4}, @isdeleted = {5}, @password = {6}, @roleid = {7}, " +
-                     "@username = {8}",
+                     "@username = {8}, @applicationid = {9}",
                       userAccounts.Id, userAccounts.Email, userAccounts.FullName, userAccounts.IsActive, userAccounts.IsChanged, userAccounts.IsDeleted,
-                      userAccounts.Password, userAccounts.RoleID, userAccounts.Username);
+                      userAccounts.Password, userAccounts.RoleID, userAccounts.Username, userAccounts.ApplicationId);
 
             }
             catch (Exception ex)

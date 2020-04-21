@@ -12,6 +12,7 @@ namespace ABMS_Backend.Service.Contract
         Task<AgentRequest> CreateAgent(AgentRequest agentRequest);  
         Task<AgentRequestEdit> UpdateAgent(AgentRequestEdit agentRequestEdit);
         Task<AgentList> GetAgentwithID([FromBody] int id);
-        //Task<AgentRequest> DeleteAgent(int agentRequest);
+        Task<int> CreateAgentID();
+        Task<int> CreateMasterSubID();
     }
 }

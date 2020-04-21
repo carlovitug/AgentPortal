@@ -43,6 +43,7 @@ namespace ABMS_Backend.Service.Concrete
 
             UserAccounts userAccounts = new UserAccounts()
             {
+                ApplicationId = register.ApplicationId,
                 FullName = register.FullName,
                 Email = register.Email,
                 Username = register.Username,

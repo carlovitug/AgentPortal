@@ -36,34 +36,33 @@ namespace ABMS_Backend.Service.Concrete
         public async Task<AgentRequest> CreateAgent(AgentRequest agentRequest)
         {
             string generatedRequestID = Guid.NewGuid().ToString("N").Substring(0, 12);
-            string generatedApplicationID = Guid.NewGuid().ToString("N").Substring(0, 12);
-            int agentID = CreateAgentID();
-            int authID = CreateAgentID();
+            int agentID = await CreateAgentID();
+            int authID = await CreateAgentID();
             int masterAgentCode = 0;
             int submasteragentCode = 0;
 
             if (agentRequest.Masteridlist != null)
             {
-                submasteragentCode = CreateMasterSubID();
+                submasteragentCode = await CreateMasterSubID();
                 masterAgentCode = Convert.ToInt32(agentRequest.Masteridlist);
             }
             else
             {
-                masterAgentCode = CreateMasterSubID();
+                masterAgentCode = await CreateMasterSubID();
                 submasteragentCode = 0;
             }
            
             Agent agent = new Agent
             {
                 AgentID = agentID,
-                ApplicationID = generatedApplicationID,
+                ApplicationID = agentRequest.ApplicationID,
                 BusinessName = agentRequest.BusinessName,
                 City = agentRequest.City,
                 CompanyTIN = agentRequest.Comptin,
                 CorporateName = agentRequest.CorpName,
                 Country = agentRequest.Country,
                 CreatedDateTime = DateTime.Now,
-                CTCNo = Convert.ToInt32(agentRequest.CTCNo),
+                CTCNo = agentRequest.CTCNo,
                 DailyDepositLimit = agentRequest.DailyDepLimit,
                 FirstName = agentRequest.FirstName,
                 IsBusiness = agentRequest.IsBusinessName != null ? bool.Parse(agentRequest.IsBusinessName) : false,
@@ -88,7 +87,7 @@ namespace ABMS_Backend.Service.Concrete
 
             Bank bank = new Bank
             {
-                ApplicationID = generatedApplicationID,
+                ApplicationID = agentRequest.ApplicationID,
                 BankAccountName = agentRequest.Bankaccname,
                 City = agentRequest.BCity,
                 Country = agentRequest.BCountry,
@@ -112,8 +111,8 @@ namespace ABMS_Backend.Service.Concrete
 
             Contact contact = new Contact
             {
-                ApplicationID = generatedApplicationID,
-                BillingContactNo = Convert.ToInt32(agentRequest.CBillContactNo),
+                ApplicationID = agentRequest.ApplicationID,
+                BillingContactNo = agentRequest.CBillContactNo,
                 BillingFirstName = agentRequest.CBillFName,
                 BillingLastName = agentRequest.CBillLName,
                 BillingMiddleName = agentRequest.CBillMName,
@@ -137,7 +136,7 @@ namespace ABMS_Backend.Service.Concrete
             {
                 AgentBranches agentBranches = new AgentBranches
                 {
-                    ApplicationID = generatedApplicationID,
+                    ApplicationID = agentRequest.ApplicationID,
                     RequestID = generatedRequestID,
                     AgentBranchName = agentRequest.AgentBranches[i].ABranchName,
                     StreetNo = agentRequest.AgentBranches[i].AStreetNo,
@@ -160,7 +159,7 @@ namespace ABMS_Backend.Service.Concrete
             {
                 Terminal terminal = new Terminal
                 {
-                    ApplicationID = generatedApplicationID,
+                    ApplicationID = agentRequest.ApplicationID,
                     RequestID = generatedRequestID,
                     POSTerminalName = agentRequest.Terminal[i].TerminalName,
                     TypeOfPOSTerminal = agentRequest.Terminal[i].TerminalType,
@@ -177,7 +176,7 @@ namespace ABMS_Backend.Service.Concrete
             {
                 Moa moa = new Moa
                 {
-                    ApplicationID = generatedApplicationID,
+                    ApplicationID = agentRequest.ApplicationID,
                     AuthDesignation = agentRequest.Auth[i].AuthDesignation,
                     AuthFirstName = agentRequest.Auth[i].AuthFirstName,
                     AuthID = authID,
@@ -199,7 +198,7 @@ namespace ABMS_Backend.Service.Concrete
             {
                 BankFees bankFees = new BankFees
                 {
-                    ApplicationID = generatedApplicationID,
+                    ApplicationID = agentRequest.ApplicationID,
                     RequestID = generatedRequestID,
                     AgentID = agentID,
                     MerchantID = agentID.ToString(),
@@ -230,7 +229,7 @@ namespace ABMS_Backend.Service.Concrete
                 CompanyTIN = agentRequestEdit.Comptin,
                 CorporateName = agentRequestEdit.CorpName,
                 Country = agentRequestEdit.Country,
-                CTCNo = Convert.ToInt32(agentRequestEdit.CTCNo),
+                CTCNo = agentRequestEdit.CTCNo,
                 DailyDepositLimit = agentRequestEdit.DailyDepLimit,
                 FirstName = agentRequestEdit.FirstName,
                 IsBusiness = agentRequestEdit.IsBusinessName != null ? bool.Parse(agentRequestEdit.IsBusinessName) : false,
@@ -277,7 +276,7 @@ namespace ABMS_Backend.Service.Concrete
             Contact contact = new Contact
             {
                 ApplicationID = agentRequestEdit.ApplicationID,
-                BillingContactNo = Convert.ToInt32(agentRequestEdit.CBillContactNo),
+                BillingContactNo = agentRequestEdit.CBillContactNo,
                 BillingFirstName = agentRequestEdit.CBillFName,
                 BillingLastName = agentRequestEdit.CBillLName,
                 BillingMiddleName = agentRequestEdit.CBillMName,
@@ -354,7 +353,7 @@ namespace ABMS_Backend.Service.Concrete
                     ApplicationID = agentRequestEdit.ApplicationID,
                     AuthDesignation = agentRequestEdit.Auth[i].AuthDesignation,
                     AuthFirstName = agentRequestEdit.Auth[i].AuthFirstName,
-                    AuthID = CreateAgentID(),
+                    AuthID = await CreateAgentID(),
                     AuthLastName = agentRequestEdit.Auth[i].AuthLastName,
                     AuthMiddleName = agentRequestEdit.Auth[i].AuthMiddleName,
                     LastUserUpdate = agentRequestEdit.User,
@@ -398,18 +397,32 @@ namespace ABMS_Backend.Service.Concrete
 
         }
 
-        public static int CreateAgentID()
+        public async Task<int> CreateAgentID()
         {
-            Random rnd = new Random();
-            int myRandomNo = rnd.Next(10000000, 99999999);
+            bool result;
+            int myRandomNo;
+            do
+            {
+                Random rnd = new Random();
+                myRandomNo = rnd.Next(10000000, 99999999);
+                result = await _agentRepository.CheckExistingAgentID(myRandomNo);
 
+            } while (result);
+            
             return myRandomNo;
         }
 
-        public static int CreateMasterSubID()
+        public async Task<int> CreateMasterSubID()
         {
-            Random rnd = new Random();
-            int myRandomNo = rnd.Next(10000000, 99999999);
+            bool result;
+            int myRandomNo;
+            do
+            {
+                Random rnd = new Random();
+                myRandomNo = rnd.Next(10000000, 99999999);
+                result = await _agentRepository.CheckExistingMasterAgentCodeID(myRandomNo);
+
+            } while (result);
 
             return myRandomNo;
         }

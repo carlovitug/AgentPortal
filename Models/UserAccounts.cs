@@ -10,6 +10,7 @@ namespace ABMS_Backend.Models
     {
         [Key]
         public int Id { get; set; }
+        public string ApplicationId { get; set; }
         public int RoleID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }

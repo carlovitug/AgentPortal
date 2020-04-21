@@ -8,6 +8,7 @@ namespace ABMS_Backend.Models
     public class Register
     {
         public int Id { get; set; }
+        public string ApplicationId { get; set; }
         public int RoleID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }

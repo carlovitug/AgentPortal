@@ -34,10 +34,10 @@ namespace ABMS_Backend.Controllers
         }
 
         //Get User
-        [HttpGet("GetUserDetails")]
-        public async Task<ActionResult<IEnumerable<UserAccounts>>> GetUsers()
+        [HttpPost("GetUserDetails")]
+        public async Task<ActionResult<IEnumerable<UserAccounts>>> GetUsers([FromBody] int applicationId)
         {
-            var userResponse = await _accountRepository.GetAllUsers();
+            var userResponse = await _accountRepository.GetAllUsers(applicationId);
             return userResponse;
         }
 

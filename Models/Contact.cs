@@ -22,7 +22,7 @@ namespace ABMS_Backend.Models
         public string BillingFirstName { get; set; }
         public string BillingMiddleName { get; set; }
         public string BillingLastName { get; set; }
-        public int BillingContactNo { get; set; }
+        public string BillingContactNo { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime UpdateDeteTime { get; set; }
         public string UserCreate { get; set; }

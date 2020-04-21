@@ -44,17 +44,17 @@ namespace ABMS_Backend.Controllers
         }
 
         ////Get all Merchants
-        [HttpGet("GetAgents")]
-        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents()
+        [HttpPost("GetAgents")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents([FromBody] int applicationID)
         {
-            var agentResponse = await _agentRepository.GetAgents();
+            var agentResponse = await _agentRepository.GetAgents(applicationID);
             return agentResponse;
         }
 
-        [HttpGet("GetPendingAgents")]
-        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents()
+        [HttpPost("GetPendingAgents")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents([FromBody] int applicationID)
         {
-            var agentResponse = await _agentRepository.GetPendingAgents();
+            var agentResponse = await _agentRepository.GetPendingAgents(applicationID);
             return agentResponse;
         }
 
@@ -66,10 +66,10 @@ namespace ABMS_Backend.Controllers
             return agentResponse;
         }
 
-        [HttpGet("GetMasterAgents")]
-        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents()
+        [HttpPost("GetMasterAgents")]
+        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents([FromBody] int applicationID)
         {
-            var agentResponse = await _agentRepository.GetMasterAgents();
+            var agentResponse = await _agentRepository.GetMasterAgents(applicationID);
             return agentResponse;
         }
 

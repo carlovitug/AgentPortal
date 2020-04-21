@@ -14,5 +14,6 @@ namespace ABMS_Backend.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        public int ApplicationId { get; set; }
     }
 }

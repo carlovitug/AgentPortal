@@ -9,11 +9,11 @@ namespace ABMS_Backend.Service.Contract
 {
     public interface IAgentRepository
     {
-        Task<ActionResult<IEnumerable<Agent>>> GetAgents();
-        Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents();
+        Task<ActionResult<IEnumerable<Agent>>> GetAgents(int applicationID);
+        Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents(int applicationID);
         Task<ChangeStatus> ChangeStatus(ChangeStatus status);
         Task<Tuple<List<Agent>, List<Bank>, List<Contact>, List<AgentBranches>, List<Terminal>, List<BankFees>, List<Moa>>> GetAgentwithID(string requestID);
-        Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents();
+        Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents(int applicationID);
         Task<ActionResult<IEnumerable<Agent>>> GetSubAgents([FromBody] int agentRequestID);
         Task<ActionResult<IEnumerable<Agent>>> GetMasterAgentID([FromBody] int agentRequestID);
         Task<Tuple<Agent, Bank, Contact>> CreateAgent(Agent agent, Bank bank, Contact contact);
@@ -32,6 +32,7 @@ namespace ABMS_Backend.Service.Contract
         Task<bool> DeleteMoa(string agentRequestID);
         Task<bool> DeleteTerminal(string agentRequestID);
         Task<bool> CheckExistingAgentID(int agentID);
+        Task<bool> CheckExistingMasterAgentCodeID(int agentID);
         Task<string> GetRequestID(int id);
     }
 }

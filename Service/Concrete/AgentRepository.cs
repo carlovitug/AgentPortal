@@ -18,20 +18,13 @@ namespace ABMS_Backend.Service.Concrete
         }
         
 
-        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents()
+        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents(int applicationID)
         {
             List<Agent> agent = new List<Agent>();
-            List<Bank> bank = new List<Bank>();
-            List<Contact> contact = new List<Contact>();
-            List<Moa> moa = new List<Moa>();
-            List<AgentBranches> agentBranches = new List<AgentBranches>();
             try
             {
-                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationReadAll").ToListAsync();
-                bank = await _context.Bank.FromSql("dbo.SP_BankInformationReadAll").ToListAsync();
-                contact = await _context.Contact.FromSql("dbo.SP_ContactInformationReadAll").ToListAsync();
-                moa = await _context.Moa.FromSql("dbo.SP_MoaInformationReadAll").ToListAsync();
-                agentBranches = await _context.AgentBranches.FromSql("dbo.SP_AgentBranchesInformationReadAll").ToListAsync();
+                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationReadAll " +
+                    "@applicationID = {0} ", applicationID).ToListAsync();
             }
             catch (Exception Ex)
             {
@@ -40,16 +33,13 @@ namespace ABMS_Backend.Service.Concrete
             return agent;
         }
 
-        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents()
+        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents(int applicationID)
         {
             List<Agent> agent = new List<Agent>();
-            List<Bank> bank = new List<Bank>();
-            List<Contact> contact = new List<Contact>();
-            List<Moa> moa = new List<Moa>();
-            List<AgentBranches> agentBranches = new List<AgentBranches>();
             try
             {
-                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationPendingReadAll").ToListAsync();
+                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationPendingReadAll " +
+                    "@applicationID = {0} ", applicationID).ToListAsync();
             }
             catch (Exception Ex)
             {
@@ -87,6 +77,7 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception Ex)
             {
+                Console.WriteLine(Ex);
                 throw;
             }
             return Tuple.Create(agent, bank, contact, agentBranches, terminal, bankFees, moa);
@@ -138,12 +129,13 @@ namespace ABMS_Backend.Service.Concrete
         }
         
 
-        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents()
+        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents(int applicationID)
         {
             List<MasterAgentID> masteragentID = new List<MasterAgentID>();
             try
             {
-                masteragentID = await _context.MasterAgentID.FromSql("dbo.SP_MasterAgentReadAll").ToListAsync();
+                masteragentID = await _context.MasterAgentID.FromSql("dbo.SP_MasterAgentReadAll " +
+                       "@applicationID = {0} ", applicationID).ToListAsync();
             }
             catch (Exception Ex)
             {
@@ -152,19 +144,6 @@ namespace ABMS_Backend.Service.Concrete
             return masteragentID;
         }
 
-        //public async Task<Agent> GetAgent(int id)
-        //{
-        //    Agent agent = new Agent();
-        //    try
-        //    {
-        //        agent = await _context.Agent.FromSql("dbo.SP_AgentRead @id = {0}").FirstOrDefaultAsync();
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //    return agent;
-        //}
 
         public async Task<Tuple<Agent, Bank, Contact>> CreateAgent(Agent agent, Bank bank, Contact contact)
         {
@@ -199,9 +178,13 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully created - Agent, Bank, Contact", DateTime.Now);
             return Tuple.Create(agent, bank, contact);
         }
 
@@ -218,9 +201,13 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully created - Moa", DateTime.Now);
             return moa;
         }
 
@@ -231,13 +218,17 @@ namespace ABMS_Backend.Service.Concrete
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_TerminalInformationCreate " +
                      "@requestid = {0}, @applicationid = {1}, @posterminalname = {2}, @typeofposterminal = {3}, " +
                      "@createddatetime = {4}, @updatedatetime  = {5}, @usercreate = {6}, @lastuserupdate = {7}, @isdeleted = {8} ",
-                      terminal.RequestID, terminal.ApplicationID, terminal.POSTerminalName, terminal.POSTerminalName, terminal.CreatedDateTime, terminal.UpdateDeteTime, terminal.UserCreate, terminal.LastUserUpdate, terminal.IsDeleted);
+                      terminal.RequestID, terminal.ApplicationID, terminal.POSTerminalName, terminal.TypeOfPOSTerminal, terminal.CreatedDateTime, terminal.UpdateDeteTime, terminal.UserCreate, terminal.LastUserUpdate, terminal.IsDeleted);
             }
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully created - Terminal", DateTime.Now);
             return terminal;
         }
 
@@ -255,9 +246,13 @@ namespace ABMS_Backend.Service.Concrete
             
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully created - Agent Branches", DateTime.Now);
             return agentBranches;
         }
 
@@ -274,9 +269,13 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully created - Bank Fees", DateTime.Now);
             return bankFees;
         }
 
@@ -313,9 +312,12 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception ex)
             {
-                var temp = ex;
-                throw;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully updated - Agent, Bank, Contact", DateTime.Now);
             return Tuple.Create(agent, bank, contact);
         }
 
@@ -332,9 +334,13 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully updated - Moa", DateTime.Now);
             return moa;
         }
 
@@ -349,9 +355,13 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully updated - Terminal", DateTime.Now);
             return terminal;
         }
 
@@ -369,9 +379,13 @@ namespace ABMS_Backend.Service.Concrete
 
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully updated - Agent Branches", DateTime.Now);
             return agentBranches;
         }
 
@@ -388,9 +402,13 @@ namespace ABMS_Backend.Service.Concrete
             }
             catch (Exception ex)
             {
-                var temp = ex;
+                var temp = "Error - " + ex;
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", temp, DateTime.Now);
                 throw;
             }
+            await _context.Database.ExecuteSqlCommandAsync("dbo.SP_LogsInformationCreate " +
+                     "@logmessage = {0}, @logdatetime = {1} ", "Successfully updated - Bank Fees", DateTime.Now);
             return bankFees;
         }
 
@@ -462,8 +480,13 @@ namespace ABMS_Backend.Service.Concrete
 
         public async Task<bool> CheckExistingAgentID(int agentID)
         {
-            bool result = await _context.Agent.AnyAsync(x => x.AgentID == agentID);
-            return result;
+            bool agentIDresult = await _context.AgentInformation.AnyAsync(x => x.AgentID == agentID);
+            return agentIDresult;
+        }
+        public async Task<bool> CheckExistingMasterAgentCodeID(int masterAgentCodeID)
+        {
+            bool masterAgentCodeIDresult = await _context.AgentInformation.AnyAsync(x => x.MasterAgentCodeID == masterAgentCodeID);
+            return masterAgentCodeIDresult;
         }
 
         public async Task<string> GetRequestID(int id)
