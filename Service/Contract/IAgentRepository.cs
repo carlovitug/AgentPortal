@@ -9,13 +9,17 @@ namespace ABMS_Backend.Service.Contract
 {
     public interface IAgentRepository
     {
-        Task<ActionResult<IEnumerable<Agent>>> GetAgents(int applicationID);
-        Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents(int applicationID);
+        Task<ActionResult<IEnumerable<Agent>>> GetAgents();
+        Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents();
         Task<ChangeStatus> ChangeStatus(ChangeStatus status);
         Task<Tuple<List<Agent>, List<Bank>, List<Contact>, List<AgentBranches>, List<Terminal>, List<BankFees>, List<Moa>>> GetAgentwithID(string requestID);
-        Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents(int applicationID);
+        Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents();
         Task<ActionResult<IEnumerable<Agent>>> GetSubAgents([FromBody] int agentRequestID);
         Task<ActionResult<IEnumerable<Agent>>> GetMasterAgentID([FromBody] int agentRequestID);
+        Task<ActionResult<IEnumerable<BankFees>>> GetMGR([FromBody] MGRRequest mgrRequest);
+        Task<bool> UpgradeDailyDepositLimit([FromBody] DailyDepositLimitRequest dailyDepositLimitRequest);
+        Task<bool> UpdateMGR(MGRRequest mgrRequest);
+        Task<bool> UpdatePhone(PhoneRequest phoneRequest);
         Task<Tuple<Agent, Bank, Contact>> CreateAgent(Agent agent, Bank bank, Contact contact);
         Task<Moa> CreateMoa(Moa moa);
         Task<Terminal> CreateTerminal(Terminal terminal);
@@ -32,6 +36,7 @@ namespace ABMS_Backend.Service.Contract
         Task<bool> DeleteMoa(string agentRequestID);
         Task<bool> DeleteTerminal(string agentRequestID);
         Task<bool> CheckExistingAgentID(int agentID);
+        Task<bool> CheckExistingRequestID(string requestID);
         Task<bool> CheckExistingMasterAgentCodeID(int agentID);
         Task<string> GetRequestID(int id);
     }

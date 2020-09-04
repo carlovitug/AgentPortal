@@ -23,6 +23,8 @@ namespace ABMS_Backend.Models
         public DbSet<UserAccounts> UserInformation { get; set; }
         public DbSet<AgentBranches> AgentBranches { get; set; }
         public DbSet<MasterAgentID> MasterAgentID { get; set; }
-        public DbSet<RequestIDModel> RequestID { get; set; }
+        public DbSet<TransactionData> TransactionData { get; set; }
+        public DbSet<Enrollment> Enrollment { get; set; }
+        public DbSet<vw_Transactions> vw_Transactions { get; set; }
     }
 }

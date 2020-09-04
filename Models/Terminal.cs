@@ -9,7 +9,6 @@ namespace ABMS_Backend.Models
     {
         public int ID { get; set; }
         public string RequestID { get; set; }
-        public string ApplicationID { get; set; }
         public string POSTerminalName { get; set; }
         public string TypeOfPOSTerminal { get; set; }
         public DateTime CreatedDateTime { get; set; }
@@ -17,6 +16,8 @@ namespace ABMS_Backend.Models
         public string UserCreate { get; set; }
         public string LastUserUpdate { get; set; }
         public bool IsDeleted { get; set; }
+        public string TerminalID { get; set; }
+        public string MerchantID { get; set; }
 
     }
 }

@@ -9,7 +9,6 @@ namespace ABMS_Backend.Models
     {
         public int ID { get; set; }
         public string RequestID { get; set; }
-        public string ApplicationID { get; set; }
         public int AgentID { get; set; }
         public string MerchantID { get; set; }
         public string TransactionType { get; set; }

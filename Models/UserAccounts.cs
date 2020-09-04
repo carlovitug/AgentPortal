@@ -10,7 +10,6 @@ namespace ABMS_Backend.Models
     {
         [Key]
         public int Id { get; set; }
-        public string ApplicationId { get; set; }
         public int RoleID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -19,5 +18,7 @@ namespace ABMS_Backend.Models
         public bool IsActive { get; set; }
         public bool IsChanged { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsLoggedIn { get; set; }
+        public int AgentID { get; set; }
     }
 }

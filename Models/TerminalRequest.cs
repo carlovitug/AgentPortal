@@ -9,5 +9,7 @@ namespace ABMS_Backend.Models
     {
         public string TerminalName { get; set; }
         public string TerminalType { get; set; }
+        public string TerminalID { get; set; }
+        public string MerchantID { get; set; }
     }
 }

@@ -9,7 +9,6 @@ namespace ABMS_Backend.Models
     {
         public string User { get; set; }
         public string RequestID { get; set; }
-        public string ApplicationID { get; set; }
         public string MasterSubID { get; set; }
         public string SubmasterAgentCode { get; set; }
         public string Masteridlist { get; set; }

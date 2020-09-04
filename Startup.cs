@@ -46,8 +46,8 @@ namespace ABMS_Backend
             services.AddTransient<IAgentRepository, AgentRepository>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAccountRepository, AccountRepository>();
-            services.AddTransient<IMonitorService, MonitorService>();
-            services.AddTransient<IMonitorRepository, MonitorRepository>();
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,8 +73,8 @@ namespace ABMS_Backend
             app.UseStaticFiles();
 
             app.UseCors(options =>
-            options.WithOrigins("http://localhost:4200")
-            //options.WithOrigins("https://sms4.mobi724.com.ph")
+            //options.WithOrigins("http://localhost:4200")
+            options.WithOrigins("https://sms4.mobi724.com.ph")
             //options.WithOrigins("http://192.168.70.10:80")
             .AllowAnyMethod()
             .AllowAnyHeader());

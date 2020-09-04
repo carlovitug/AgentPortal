@@ -9,7 +9,6 @@ namespace ABMS_Backend.Models
     {
         public int ID { get; set; }
         public string RequestID { get; set; }
-        public string ApplicationID { get; set; }
         public string AgentBranchName { get; set; }
         public string StreetNo { get; set; }
         public string Town { get; set; }

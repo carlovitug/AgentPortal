@@ -33,11 +33,21 @@ namespace ABMS_Backend.Controllers
                 return BadRequest(new { message = "Invalid username or password." });
         }
 
-        //Get User
-        [HttpPost("GetUserDetails")]
-        public async Task<ActionResult<IEnumerable<UserAccounts>>> GetUsers([FromBody] int applicationId)
+        [HttpPost("LogOut")]
+        public async Task<IActionResult> LoggedOut([FromBody] int id)
         {
-            var userResponse = await _accountRepository.GetAllUsers(applicationId);
+            var logoutResponse = await _accountRepository.LoggedOut(id);
+            if (logoutResponse)
+                return Ok(new { logoutResponse });
+            else
+                return BadRequest(new { message = "Invalid username or password." });
+        }
+
+        //Get User
+        [HttpGet("GetUserDetails")]
+        public async Task<ActionResult<IEnumerable<UserAccounts>>> GetUsers()
+        {
+            var userResponse = await _accountRepository.GetAllUsers();
             return userResponse;
         }
 
@@ -47,7 +57,7 @@ namespace ABMS_Backend.Controllers
         {
             var registerResponse = await _accountService.RegisterUser(register);
             if (!registerResponse.Item2)
-                return Ok(new { registerResponse.Item1, registerResponse.Item2 });
+                return Ok(new { registerResponse.Item1, registerResponse.Item2, registerResponse.Item3 });
             else
                 return Ok(new { registerResponse.Item2 });
         }
@@ -59,7 +69,7 @@ namespace ABMS_Backend.Controllers
             var userResponse = await _accountService.UpdateUser(userAccounts);
             return Ok(new { userResponse });
         }
-
+        
         //Delete User
         [HttpPost("DeleteAccount")]
         public async Task<IActionResult> DeleteAccount([FromBody] int userRequestID)
@@ -81,10 +91,10 @@ namespace ABMS_Backend.Controllers
         public async Task<IActionResult> PasswordReset([FromBody] ChangePass email)
         {
             var passResetResponse = await _accountService.PasswordReset(email);
-            if (passResetResponse)
-                return Ok(passResetResponse);
+            if (passResetResponse == "Success")
+                return Ok(true);
             else
-                return BadRequest(new { message = "Unsuccesful!" });
+                return BadRequest(new { message = passResetResponse });
         }
     }
 }

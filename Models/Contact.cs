@@ -10,7 +10,6 @@ namespace ABMS_Backend.Models
     {
         public int ID { get; set; }
         public string RequestID { get; set; }
-        public string ApplicationID { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }

@@ -18,13 +18,12 @@ namespace ABMS_Backend.Service.Concrete
         }
         
 
-        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents(int applicationID)
+        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents()
         {
             List<Agent> agent = new List<Agent>();
             try
             {
-                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationReadAll " +
-                    "@applicationID = {0} ", applicationID).ToListAsync();
+                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationReadAll").ToListAsync();
             }
             catch (Exception Ex)
             {
@@ -33,13 +32,12 @@ namespace ABMS_Backend.Service.Concrete
             return agent;
         }
 
-        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents(int applicationID)
+        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents()
         {
             List<Agent> agent = new List<Agent>();
             try
             {
-                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationPendingReadAll " +
-                    "@applicationID = {0} ", applicationID).ToListAsync();
+                agent = await _context.Agent.FromSql("dbo.SP_AgentInformationPendingReadAll").ToListAsync();
             }
             catch (Exception Ex)
             {
@@ -99,6 +97,21 @@ namespace ABMS_Backend.Service.Concrete
             return agent;
         }
 
+        public async Task<ActionResult<IEnumerable<BankFees>>> GetMGR(MGRRequest mgrRequest)
+        {
+            List<BankFees> bankfees = new List<BankFees>();
+            try
+            {
+                bankfees = await _context.BankFees.FromSql("dbo.SP_GetMGR " +
+                    "@requestid = {0} ", mgrRequest.RequestID).ToListAsync();
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+            return bankfees;
+        }
+
         public async Task<ActionResult<IEnumerable<Agent>>> GetMasterAgentID(int agentRequestID)
         {
             List<Agent> agent = new List<Agent>();
@@ -113,6 +126,52 @@ namespace ABMS_Backend.Service.Concrete
             }
             return agent;
         }
+
+        public async Task<bool> UpgradeDailyDepositLimit(DailyDepositLimitRequest dailyDepositLimitRequest)
+        {
+            List<Agent> agent = new List<Agent>();
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_UpgradeDailyDepositLimit " +
+                    "@requestid = {0}, @dailydeplimit = {1} ", dailyDepositLimitRequest.RequestID, dailyDepositLimitRequest.DailyDepLimit);
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateMGR(MGRRequest mgrRequest)
+        {
+            List<Agent> agent = new List<Agent>();
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_UpdateMGR " +
+                    "@requestid = {0}, @mgr = {1} ", mgrRequest.RequestID, mgrRequest.MGR);
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdatePhone(PhoneRequest phoneRequest)
+        {
+            List<Agent> agent = new List<Agent>();
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync("dbo.SP_UpdatePhone " +
+                    "@requestid = {0}, @phoneno = {1} ", phoneRequest.RequestID, phoneRequest.PhoneNo);
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
 
         public async Task<ChangeStatus> ChangeStatus(ChangeStatus status)
         {
@@ -129,13 +188,12 @@ namespace ABMS_Backend.Service.Concrete
         }
         
 
-        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents(int applicationID)
+        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents()
         {
             List<MasterAgentID> masteragentID = new List<MasterAgentID>();
             try
             {
-                masteragentID = await _context.MasterAgentID.FromSql("dbo.SP_MasterAgentReadAll " +
-                       "@applicationID = {0} ", applicationID).ToListAsync();
+                masteragentID = await _context.MasterAgentID.FromSql("dbo.SP_MasterAgentReadAll ").ToListAsync();
             }
             catch (Exception Ex)
             {
@@ -150,28 +208,28 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_AgentInformationCreate " +
-                     "@requestid = {0}, @applicationid = {1}, @masteragentcodeid = {2}, @subagentcodeid  = {3}, @agentid = {4}, @iscorp = {5}, @corpname = {6}, " +
-                     "@ismerch = {7}, @merchcategory = {8}, @isbusiness = {9}, @businessname  = {10}, @phonenum = {11}, @firstname = {12}, @middlename = {13}, " +
-                     "@lastname = {14}, @streetno = {15}, @town = {16}, @city  = {17}, @country = {18}, @postalcode = {19}, @comptin = {20}, " +
-                     "@ctcno = {21}, @dailydeplimit = {22}, @createddatetime = {23}, @updatedatetime  = {24}, @usercreate = {25}, @lastuserupdate = {26}, @status = {27}, @isdeleted = {28} ",
-                      agent.RequestID, agent.ApplicationID, agent.MasterAgentCodeID, agent.SubAgentCodeID, agent.AgentID, agent.IsCorporate, agent.CorporateName,
+                     "@requestid = {0}, @masteragentcodeid = {1}, @subagentcodeid  = {2}, @agentid = {3}, @iscorp = {4}, @corpname = {5}, " +
+                     "@ismerch = {6}, @merchcategory = {7}, @isbusiness = {8}, @businessname  = {9}, @phonenum = {10}, @firstname = {11}, @middlename = {12}, " +
+                     "@lastname = {13}, @streetno = {14}, @town = {15}, @city  = {16}, @country = {17}, @postalcode = {18}, @comptin = {19}, " +
+                     "@ctcno = {20}, @dailydeplimit = {21}, @createddatetime = {22}, @updatedatetime  = {23}, @usercreate = {24}, @lastuserupdate = {25}, @status = {26}, @isdeleted = {27} ",
+                      agent.RequestID, agent.MasterAgentCodeID, agent.SubAgentCodeID, agent.AgentID, agent.IsCorporate, agent.CorporateName,
                       agent.IsMerchCategory, agent.MerchantCategory, agent.IsBusiness, agent.BusinessName, agent.PhoneNo, agent.FirstName, agent.MiddleName,
                       agent.LastName, agent.StreetNo, agent.Town, agent.City, agent.Country, agent.PostalCode, agent.CompanyTIN, agent.CTCNo, agent.DailyDepositLimit,
                       agent.CreatedDateTime, agent.UpdateDeteTime, agent.UserCreate, agent.LastUserUpdate, agent.Status, agent.IsDeleted);
 
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_BankInformationCreate " +
-                     "@requestid = {0}, @applicationid = {1}, @depbank = {2}, @streetno  = {3}, @town = {4}, @city = {5}, @country = {6}, " +
-                     "@postalcode = {7}, @bankaccname = {8}, @rbotype = {9}, @rbofname  = {10}, @rbomname = {11}, @rbolname = {12}, @rboemail = {13}, " +
-                     "@rbocontactno = {14}, @createddatetime = {15}, @updatedatetime = {16}, @usercreate  = {17}, @lastuserupdate = {18}, @isdeleted = {19} ",
-                      bank.RequestID, bank.ApplicationID, bank.DepositoryBank, bank.StreetNo, bank.Town, bank.City, bank.Country,
+                     "@requestid = {0}, @depbank = {1}, @streetno  = {2}, @town = {3}, @city = {4}, @country = {5}, " +
+                     "@postalcode = {6}, @bankaccname = {7}, @rbotype = {8}, @rbofname  = {9}, @rbomname = {10}, @rbolname = {11}, @rboemail = {12}, " +
+                     "@rbocontactno = {13}, @createddatetime = {14}, @updatedatetime = {15}, @usercreate  = {16}, @lastuserupdate = {17}, @isdeleted = {18} ",
+                      bank.RequestID, bank.DepositoryBank, bank.StreetNo, bank.Town, bank.City, bank.Country,
                       bank.PostalCode, bank.BankAccountName, bank.RBOType, bank.RBOFName, bank.RBOMName, bank.RBOLName, bank.RBOEmailAdd,
                       bank.RBOContactNo, bank.CreatedDateTime, bank.UpdateDeteTime, bank.UserCreate, bank.LastUserUpdate, bank.IsDeleted);
 
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_ContactInformationCreate " +
-                     "@requestid = {0}, @applicationid = {1}, @firstname = {2}, @middlename  = {3}, @lastname = {4}, @designation = {5}, @department = {6}, " +
-                     "@contactno = {7}, @faxno = {8}, @emailadd = {9}, @billfname  = {10}, @billmname = {11}, @billlname = {12}, @billcontactno = {13}, " +
-                     "@createddatetime = {14}, @updatedatetime = {15}, @usercreate = {16}, @lastuserupdate  = {17}, @isdeleted = {18} ",
-                      contact.RequestID, contact.ApplicationID, contact.FirstName, contact.MiddleName, contact.LastName, contact.Designation, contact.Department,
+                     "@requestid = {0}, @firstname = {1}, @middlename  = {2}, @lastname = {3}, @designation = {4}, @department = {5}, " +
+                     "@contactno = {6}, @faxno = {7}, @emailadd = {8}, @billfname  = {9}, @billmname = {10}, @billlname = {11}, @billcontactno = {12}, " +
+                     "@createddatetime = {13}, @updatedatetime = {14}, @usercreate = {15}, @lastuserupdate  = {16}, @isdeleted = {17} ",
+                      contact.RequestID, contact.FirstName, contact.MiddleName, contact.LastName, contact.Designation, contact.Department,
                       contact.ContactNo, contact.FaxNo, contact.EmailAddress, contact.BillingFirstName, contact.BillingMiddleName, contact.BillingLastName, contact.BillingContactNo,
                       contact.CreatedDateTime, contact.UpdateDeteTime, contact.UserCreate, contact.LastUserUpdate, contact.IsDeleted);
                 
@@ -193,9 +251,9 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MoaInformationCreate " +
-                     "@requestid = {0}, @applicationid = {1}, @authid = {2}, @authfirstname = {3}, @authmiddlename = {4}, @authlastname = {5}, @authdesignation = {6}, @valididtype = {7}, " +
-                     "@valididno = {8}, @valididexpdate = {9}, @createddatetime = {10}, @updatedatetime  = {11}, @usercreate = {12}, @lastuserupdate = {13}, @isdeleted = {14} ",
-                      moa.RequestID, moa.ApplicationID, moa.AuthID, moa.AuthFirstName, moa.AuthMiddleName, moa.AuthLastName, moa.AuthDesignation,
+                     "@requestid = {0}, @authid = {1}, @authfirstname = {2}, @authmiddlename = {3}, @authlastname = {4}, @authdesignation = {5}, @valididtype = {6}, " +
+                     "@valididno = {7}, @valididexpdate = {8}, @createddatetime = {9}, @updatedatetime  = {10}, @usercreate = {11}, @lastuserupdate = {12}, @isdeleted = {13} ",
+                      moa.RequestID, moa.AuthID, moa.AuthFirstName, moa.AuthMiddleName, moa.AuthLastName, moa.AuthDesignation,
                       moa.ValidIDType, moa.ValidIDNumber, moa.ValidIDExpdate, moa.CreatedDateTime, moa.UpdateDeteTime, moa.UserCreate, moa.LastUserUpdate, moa.IsDeleted);
 
             }
@@ -216,9 +274,9 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_TerminalInformationCreate " +
-                     "@requestid = {0}, @applicationid = {1}, @posterminalname = {2}, @typeofposterminal = {3}, " +
-                     "@createddatetime = {4}, @updatedatetime  = {5}, @usercreate = {6}, @lastuserupdate = {7}, @isdeleted = {8} ",
-                      terminal.RequestID, terminal.ApplicationID, terminal.POSTerminalName, terminal.TypeOfPOSTerminal, terminal.CreatedDateTime, terminal.UpdateDeteTime, terminal.UserCreate, terminal.LastUserUpdate, terminal.IsDeleted);
+                     "@requestid = {0}, @posterminalname = {1}, @typeofposterminal = {2}, " +
+                     "@createddatetime = {3}, @updatedatetime  = {4}, @usercreate = {5}, @lastuserupdate = {6}, @isdeleted = {7}, @terminalid = {8}, @merchantid = {9} ",
+                      terminal.RequestID, terminal.POSTerminalName, terminal.TypeOfPOSTerminal, terminal.CreatedDateTime, terminal.UpdateDeteTime, terminal.UserCreate, terminal.LastUserUpdate, terminal.IsDeleted, terminal.TerminalID, terminal.MerchantID);
             }
             catch (Exception ex)
             {
@@ -237,10 +295,10 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_AgentBranchesInformationCreate " +
-                     "@requestid = {0}, @applicationid = {1}, @agentbranchname = {2}, @streetno = {3}, " +
-                     "@town = {4}, @city = {5}, @country = {6}, @postalcode = {7}, @phoneno = {8}, " +
-                     "@createddatetime = {9}, @updatedatetime = {10}, @usercreate = {11}, @lastuserupdate  = {12}, @isdeleted = {13} ",
-                      agentBranches.RequestID, agentBranches.ApplicationID, agentBranches.AgentBranchName, agentBranches.StreetNo, agentBranches.Town, agentBranches.City, agentBranches.Country, agentBranches.PostalCode,
+                     "@requestid = {0}, @agentbranchname = {1}, @streetno = {2}, " +
+                     "@town = {3}, @city = {4}, @country = {5}, @postalcode = {6}, @phoneno = {7}, " +
+                     "@createddatetime = {8}, @updatedatetime = {9}, @usercreate = {10}, @lastuserupdate  = {11}, @isdeleted = {12} ",
+                      agentBranches.RequestID, agentBranches.AgentBranchName, agentBranches.StreetNo, agentBranches.Town, agentBranches.City, agentBranches.Country, agentBranches.PostalCode,
                       agentBranches.PhoneNo, agentBranches.CreatedDateTime, agentBranches.UpdateDeteTime, agentBranches.UserCreate, agentBranches.LastUserUpdate, agentBranches.IsDeleted);
             }
             
@@ -261,10 +319,10 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_BankFeesInformationCreate " +
-                     "@requestid = {0}, @applicationid = {1}, @agentid = {2}, @merchantid = {3}, " +
-                     "@transactiontype = {4}, @conveniencefee  = {5}, @quota = {6}, @createddatetime = {7}, " +
-                     "@updatedatetime = {8}, @usercreate  = {9}, @lastuserupdate = {10}, @isdeleted = {11}", 
-                      bankFees.RequestID, bankFees.ApplicationID, bankFees.AgentID, bankFees.MerchantID, bankFees.TransactionType, bankFees.ConvenienceFee, bankFees.Quota,
+                     "@requestid = {0}, @agentid = {1}, @merchantid = {2}, " +
+                     "@transactiontype = {3}, @conveniencefee  = {4}, @quota = {5}, @createddatetime = {6}, " +
+                     "@updatedatetime = {7}, @usercreate  = {8}, @lastuserupdate = {9}, @isdeleted = {10}", 
+                      bankFees.RequestID, bankFees.AgentID, bankFees.MerchantID, bankFees.TransactionType, bankFees.ConvenienceFee, bankFees.Quota,
                       bankFees.CreatedDateTime, bankFees.UpdateDeteTime, bankFees.UserCreate, bankFees.LastUserUpdate, bankFees.IsDeleted);
             }
             catch (Exception ex)
@@ -284,28 +342,28 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_AgentInformationUpdate " +
-                     "@requestid = {0}, @applicationid = {1}, @masteragentcodeid = {2}, @subagentcodeid  = {3}, @agentid = {4}, @iscorp = {5}, @corpname = {6}, " +
-                     "@ismerch = {7}, @merchcategory = {8}, @isbusiness = {9}, @businessname  = {10}, @phonenum = {11}, @firstname = {12}, @middlename = {13}, " +
-                     "@lastname = {14}, @streetno = {15}, @town = {16}, @city  = {17}, @country = {18}, @postalcode = {19}, @comptin = {20}, " +
-                     "@ctcno = {21}, @dailydeplimit = {22}, @updatedatetime = {23}, @lastuserupdate  = {24}, @status = {25}, @isdeleted = {26} ",
-                      agent.RequestID, agent.ApplicationID, agent.MasterAgentCodeID, agent.SubAgentCodeID, agent.AgentID, agent.IsCorporate, agent.CorporateName,
+                     "@requestid = {0}, @masteragentcodeid = {1}, @subagentcodeid  = {2}, @agentid = {3}, @iscorp = {4}, @corpname = {5}, " +
+                     "@ismerch = {6}, @merchcategory = {7}, @isbusiness = {8}, @businessname  = {9}, @phonenum = {10}, @firstname = {11}, @middlename = {12}, " +
+                     "@lastname = {13}, @streetno = {14}, @town = {15}, @city  = {16}, @country = {17}, @postalcode = {18}, @comptin = {19}, " +
+                     "@ctcno = {20}, @dailydeplimit = {21}, @updatedatetime = {22}, @lastuserupdate  = {23}, @status = {24}, @isdeleted = {25} ",
+                      agent.RequestID, agent.MasterAgentCodeID, agent.SubAgentCodeID, agent.AgentID, agent.IsCorporate, agent.CorporateName,
                       agent.IsMerchCategory, agent.MerchantCategory, agent.IsBusiness, agent.BusinessName, agent.PhoneNo, agent.FirstName, agent.MiddleName,
                       agent.LastName, agent.StreetNo, agent.Town, agent.City, agent.Country, agent.PostalCode, agent.CompanyTIN, agent.CTCNo, agent.DailyDepositLimit,
                       agent.UpdateDeteTime, agent.LastUserUpdate, agent.Status, agent.IsDeleted);
 
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_BankInformationUpdate " +
-                     "@requestid = {0}, @applicationid = {1}, @depbank = {2}, @streetno  = {3}, @town = {4}, @city = {5}, @country = {6}, " +
-                     "@postalcode = {7}, @bankaccname = {8}, @rbotype = {9}, @rbofname  = {10}, @rbomname = {11}, @rbolname = {12}, @rboemail = {13}, " +
-                     "@rbocontactno = {14}, @updatedatetime = {15}, @lastuserupdate = {16}, @isdeleted  = {17} ",
-                      bank.RequestID, bank.ApplicationID, bank.DepositoryBank, bank.StreetNo, bank.Town, bank.City, bank.Country,
+                     "@requestid = {0}, @depbank = {1}, @streetno  = {2}, @town = {3}, @city = {4}, @country = {5}, " +
+                     "@postalcode = {6}, @bankaccname = {7}, @rbotype = {8}, @rbofname  = {9}, @rbomname = {10}, @rbolname = {11}, @rboemail = {12}, " +
+                     "@rbocontactno = {13}, @updatedatetime = {14}, @lastuserupdate = {15}, @isdeleted  = {16} ",
+                      bank.RequestID, bank.DepositoryBank, bank.StreetNo, bank.Town, bank.City, bank.Country,
                       bank.PostalCode, bank.BankAccountName, bank.RBOType, bank.RBOFName, bank.RBOMName, bank.RBOLName, bank.RBOEmailAdd,
                       bank.RBOContactNo, bank.UpdateDeteTime, bank.LastUserUpdate, bank.IsDeleted);
 
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_ContactInformationUpdate " +
-                     "@requestid = {0}, @applicationid = {1}, @firstname = {2}, @middlename  = {3}, @lastname = {4}, @designation = {5}, @department = {6}, " +
-                     "@contactno = {7}, @faxno = {8}, @emailadd = {9}, @billfname  = {10}, @billmname = {11}, @billlname = {12}, @billcontactno = {13}, " +
-                     "@updatedatetime = {14}, @lastuserupdate = {15}, @isdeleted = {16} ",
-                      contact.RequestID, contact.ApplicationID, contact.FirstName, contact.MiddleName, contact.LastName, contact.Designation, contact.Department,
+                     "@requestid = {0}, @firstname = {1}, @middlename  = {2}, @lastname = {3}, @designation = {4}, @department = {5}, " +
+                     "@contactno = {6}, @faxno = {7}, @emailadd = {8}, @billfname  = {9}, @billmname = {10}, @billlname = {11}, @billcontactno = {12}, " +
+                     "@updatedatetime = {13}, @lastuserupdate = {14}, @isdeleted = {15} ",
+                      contact.RequestID, contact.FirstName, contact.MiddleName, contact.LastName, contact.Designation, contact.Department,
                       contact.ContactNo, contact.FaxNo, contact.EmailAddress, contact.BillingFirstName, contact.BillingMiddleName, contact.BillingLastName, contact.BillingContactNo,
                       contact.UpdateDeteTime, contact.LastUserUpdate, contact.IsDeleted);
 
@@ -326,9 +384,9 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_MoaInformationUpdate " +
-                     "@requestid = {0}, @applicationid = {1}, @authid = {2}, @authfirstname = {3}, @authmiddlename = {4}, @authlastname = {5}, @authdesignation = {6}, @valididtype = {7}, " +
-                     "@valididno = {8}, @valididexpdate = {9}, @createddatetime = {10}, @updatedatetime  = {11}, @usercreate = {12}, @lastuserupdate = {13}, @isdeleted = {14} ",
-                      moa.RequestID, moa.ApplicationID, moa.AuthID, moa.AuthFirstName, moa.AuthMiddleName, moa.AuthLastName, moa.AuthDesignation,
+                     "@requestid = {0}, @authid = {1}, @authfirstname = {2}, @authmiddlename = {3}, @authlastname = {4}, @authdesignation = {5}, @valididtype = {6}, " +
+                     "@valididno = {7}, @valididexpdate = {8}, @createddatetime = {9}, @updatedatetime  = {10}, @usercreate = {11}, @lastuserupdate = {12}, @isdeleted = {13} ",
+                      moa.RequestID, moa.AuthID, moa.AuthFirstName, moa.AuthMiddleName, moa.AuthLastName, moa.AuthDesignation,
                       moa.ValidIDType, moa.ValidIDNumber, moa.ValidIDExpdate, moa.CreatedDateTime, moa.UpdateDeteTime, moa.UserCreate, moa.LastUserUpdate, moa.IsDeleted);
 
             }
@@ -349,9 +407,9 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_TerminalInformationUpdate " +
-                     "@requestid = {0}, @applicationid = {1}, @posterminalname = {2}, @typeofposterminal = {3}, " +
-                     "@createddatetime = {4}, @updatedatetime  = {5}, @usercreate = {6}, @lastuserupdate = {7}, @isdeleted = {8} ",
-                      terminal.RequestID, terminal.ApplicationID, terminal.POSTerminalName, terminal.TypeOfPOSTerminal, terminal.CreatedDateTime, terminal.UpdateDeteTime, terminal.UserCreate, terminal.LastUserUpdate, terminal.IsDeleted);
+                     "@requestid = {0}, @posterminalname = {1}, @typeofposterminal = {2}, " +
+                     "@createddatetime = {3}, @updatedatetime  = {4}, @usercreate = {5}, @lastuserupdate = {6}, @isdeleted = {7}, @terminalid = {8}, @merchantid = {9} ",
+                      terminal.RequestID, terminal.POSTerminalName, terminal.TypeOfPOSTerminal, terminal.CreatedDateTime, terminal.UpdateDeteTime, terminal.UserCreate, terminal.LastUserUpdate, terminal.IsDeleted, terminal.TerminalID, terminal.MerchantID);
             }
             catch (Exception ex)
             {
@@ -370,10 +428,10 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_AgentBranchesInformationUpdate " +
-                     "@requestid = {0}, @applicationid = {1}, @agentbranchname = {2}, @streetno = {3}, " +
-                     "@town = {4}, @city = {5}, @country = {6}, @postalcode = {7}, @phoneno = {8}, " +
-                     "@createddatetime = {9}, @updatedatetime = {10}, @usercreate = {11}, @lastuserupdate  = {12}, @isdeleted = {13} ",
-                      agentBranches.RequestID, agentBranches.ApplicationID, agentBranches.AgentBranchName, agentBranches.StreetNo, agentBranches.Town, agentBranches.City, agentBranches.Country, agentBranches.PostalCode,
+                     "@requestid = {0}, @agentbranchname = {1}, @streetno = {2}, " +
+                     "@town = {3}, @city = {4}, @country = {5}, @postalcode = {6}, @phoneno = {7}, " +
+                     "@createddatetime = {8}, @updatedatetime = {9}, @usercreate = {10}, @lastuserupdate  = {11}, @isdeleted = {12} ",
+                      agentBranches.RequestID, agentBranches.AgentBranchName, agentBranches.StreetNo, agentBranches.Town, agentBranches.City, agentBranches.Country, agentBranches.PostalCode,
                       agentBranches.PhoneNo, agentBranches.CreatedDateTime, agentBranches.UpdateDeteTime, agentBranches.UserCreate, agentBranches.LastUserUpdate, agentBranches.IsDeleted);
             }
 
@@ -394,10 +452,10 @@ namespace ABMS_Backend.Service.Concrete
             try
             {
                 await _context.Database.ExecuteSqlCommandAsync("dbo.SP_BankFeesInformationUpdate " +
-                     "@requestid = {0}, @applicationid = {1}, @agentid = {2}, @merchantid = {3}, " +
-                     "@transactiontype = {4}, @conveniencefee  = {5}, @quota = {6}, @createddatetime = {7}, " +
-                     "@updatedatetime = {8}, @usercreate  = {9}, @lastuserupdate = {10}, @isdeleted = {11}",
-                      bankFees.RequestID, bankFees.ApplicationID, bankFees.AgentID, bankFees.MerchantID, bankFees.TransactionType, bankFees.ConvenienceFee, bankFees.Quota,
+                     "@requestid = {0}, @agentid = {1}, @merchantid = {2}, " +
+                     "@transactiontype = {3}, @conveniencefee  = {4}, @quota = {5}, @createddatetime = {6}, " +
+                     "@updatedatetime = {7}, @usercreate  = {8}, @lastuserupdate = {9}, @isdeleted = {10}",
+                      bankFees.RequestID, bankFees.AgentID, bankFees.MerchantID, bankFees.TransactionType, bankFees.ConvenienceFee, bankFees.Quota,
                       bankFees.CreatedDateTime, bankFees.UpdateDeteTime, bankFees.UserCreate, bankFees.LastUserUpdate, bankFees.IsDeleted);
             }
             catch (Exception ex)
@@ -482,6 +540,12 @@ namespace ABMS_Backend.Service.Concrete
         {
             bool agentIDresult = await _context.AgentInformation.AnyAsync(x => x.AgentID == agentID);
             return agentIDresult;
+        }
+
+        public async Task<bool> CheckExistingRequestID(string requestID)
+        {
+            bool requestIDresult = await _context.AgentInformation.AnyAsync(x => x.RequestID == requestID);
+            return requestIDresult;
         }
         public async Task<bool> CheckExistingMasterAgentCodeID(int masterAgentCodeID)
         {

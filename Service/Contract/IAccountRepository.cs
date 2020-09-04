@@ -10,10 +10,13 @@ namespace ABMS_Backend.Service.Contract
     public interface IAccountRepository
     {
         Task<Tuple<bool, UserAccounts>> GetUser(Login login);
-        Task<ActionResult<IEnumerable<UserAccounts>>> GetAllUsers(int applicationId);
+        Task<bool> LoggedIn(int id);
+        Task<bool> LoggedOut(int id);
+        Task<ActionResult<IEnumerable<UserAccounts>>> GetAllUsers();
         Task<string> GetUserDetails(int id);
         Task<UserAccounts> RegisterUser(UserAccounts userAccounts);
         Task<UserAccounts> UpdateUser(UserAccounts userAccounts);
+        Task<UserAccounts> ChangePassword(UserAccounts userAccounts);
         Task<int> DeleteUser(int userAccountsID);
         Task<bool> CheckExistingUser(UserAccounts userAccounts);
         Task<bool> CheckExistingEmail(string email);

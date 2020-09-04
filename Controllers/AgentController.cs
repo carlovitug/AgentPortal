@@ -44,17 +44,17 @@ namespace ABMS_Backend.Controllers
         }
 
         ////Get all Merchants
-        [HttpPost("GetAgents")]
-        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents([FromBody] int applicationID)
+        [HttpGet("GetAgents")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetAgents()
         {
-            var agentResponse = await _agentRepository.GetAgents(applicationID);
+            var agentResponse = await _agentRepository.GetAgents();
             return agentResponse;
         }
 
-        [HttpPost("GetPendingAgents")]
-        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents([FromBody] int applicationID)
+        [HttpGet("GetPendingAgents")]
+        public async Task<ActionResult<IEnumerable<Agent>>> GetPendingAgents()
         {
-            var agentResponse = await _agentRepository.GetPendingAgents(applicationID);
+            var agentResponse = await _agentRepository.GetPendingAgents();
             return agentResponse;
         }
 
@@ -66,10 +66,10 @@ namespace ABMS_Backend.Controllers
             return agentResponse;
         }
 
-        [HttpPost("GetMasterAgents")]
-        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents([FromBody] int applicationID)
+        [HttpGet("GetMasterAgents")]
+        public async Task<ActionResult<IEnumerable<MasterAgentID>>> GetMasterAgents()
         {
-            var agentResponse = await _agentRepository.GetMasterAgents(applicationID);
+            var agentResponse = await _agentRepository.GetMasterAgents();
             return agentResponse;
         }
 
@@ -80,10 +80,37 @@ namespace ABMS_Backend.Controllers
             return agentResponse;
         }
 
+        [HttpPost("GetMGR")]
+        public async Task<ActionResult<IEnumerable<BankFees>>> GetMGR([FromBody] MGRRequest mgrRequest)
+        {
+            var agentResponse = await _agentRepository.GetMGR(mgrRequest);
+            return agentResponse;
+        }
         [HttpPost("GetMasterAgentID")]
         public async Task<ActionResult<IEnumerable<Agent>>> GetMasterAgentID([FromBody] int agentRequestID)
         {
             var agentResponse = await _agentRepository.GetMasterAgentID(agentRequestID);
+            return agentResponse;
+        }
+
+        [HttpPost("UpgradeAgent")]
+        public async Task<bool> UpgradeAgent([FromBody] DailyDepositLimitRequest dailyDepositLimitRequest)
+        {
+            var agentResponse = await _agentRepository.UpgradeDailyDepositLimit(dailyDepositLimitRequest);
+            return agentResponse;
+        }
+
+        [HttpPost("UpdateMGR")]
+        public async Task<bool> UpdateMGR([FromBody] MGRRequest mgrRequest)
+        {
+            var agentResponse = await _agentRepository.UpdateMGR(mgrRequest);
+            return agentResponse;
+        }
+
+        [HttpPost("UpdatePhone")]
+        public async Task<bool> UpdatePhone([FromBody] PhoneRequest phoneRequest)
+        {
+            var agentResponse = await _agentRepository.UpdatePhone(phoneRequest);
             return agentResponse;
         }
 

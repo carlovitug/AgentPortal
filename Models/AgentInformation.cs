@@ -11,7 +11,6 @@ namespace ABMS_Backend.Models
 
         public int ID { get; set; }
         public string RequestID { get; set; }
-        public string ApplicationID { get; set; }
         public int MasterAgentCodeID { get; set; }
         public int SubAgentCodeID { get; set; }
         public int AgentID { get; set; }
